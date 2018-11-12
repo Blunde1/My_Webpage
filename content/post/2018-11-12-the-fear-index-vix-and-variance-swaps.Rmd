@@ -235,6 +235,4 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
 $$
 which we recognize as the fomula for the VIX.
 
-This is what I'm able to write for tonight, there is a party that I kinda want to go to, also it is 9pm. I hope this helps! Good luck with everything Charles. I'll probably write something more over the weekend about VIX and then how to estimate VIX well.
-
-As I said before, remember that the underlying "stock" here is the S\&P500 index! I am note sure if there are call and put options that has the S\&P as underlying, if there isn't, you should use underlying stocks that is highly correlated (beta) with the S\&P and calculate the VIX for all of them and maybe take the average. Something like that, I'll definetly come back to that when trying to come up with a good estimator. One of my professors also proposed a model for making predictions of the VIX, this is something that is surely interesting if it works.
+Remember that the underlying "stock" here is the S\&P500 index! I am note sure if there are call and put options that has the S\&P as underlying, if there isn't, you should use underlying stocks that is highly correlated (beta) with the S\&P and calculate the VIX for all of them and maybe take the average.
