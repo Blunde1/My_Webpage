@@ -36,16 +36,16 @@
     
     <url>
     
-      <loc>/project/aqualens/aqualens/</loc>
-      <lastmod>2018-05-12T00:00:00+02:00</lastmod>
+      <loc>/privacy/</loc>
+      <lastmod>2018-06-28T00:00:00+02:00</lastmod>
     </url>
     
   
     
     <url>
     
-      <loc>/talk/example/</loc>
-      <lastmod>2017-01-01T00:00:00+01:00</lastmod>
+      <loc>/project/aqualens/aqualens/</loc>
+      <lastmod>2018-05-12T00:00:00+02:00</lastmod>
     </url>
     
   
@@ -69,6 +69,22 @@
     <url>
     
       <loc>/talk/</loc>
+      <lastmod>2017-01-01T00:00:00+01:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/talk/2018-10-31-bergen_ml/2018-10-31-bergen_ml.md/</loc>
+      <lastmod>2017-01-01T00:00:00+01:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/talk/example/</loc>
       <lastmod>2017-01-01T00:00:00+01:00</lastmod>
     </url>
     

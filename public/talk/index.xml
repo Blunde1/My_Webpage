@@ -13,7 +13,18 @@
     
     
     <item>
-      <title>Example Talk</title>
+      <title>Test header</title>
+      <link>/talk/2018-10-31-bergen_ml/2018-10-31-bergen_ml.md/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0100</pubDate>
+      
+      <guid>/talk/2018-10-31-bergen_ml/2018-10-31-bergen_ml.md/</guid>
+      <description>Click on the Slides button above to view the built-in slides feature.
+ Slides can be added in a few ways:
+ Create slides using Academic&amp;rsquo;s Slides feature and link using url_slides parameter in the front matter of the talk file Upload an existing slide deck to static/ and link using url_slides parameter in the front matter of the talk file Embed your slides (e.g. Google Slides) or presentation video on this page using shortcodes.</description>
+    </item>
+    
+    <item>
+      <title>Test header</title>
       <link>/talk/example/</link>
       <pubDate>Sun, 01 Jan 2017 00:00:00 +0100</pubDate>
       
