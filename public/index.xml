@@ -19,7 +19,8 @@
       <description>
 
 
-&lt;p&gt;Four years ago a friend from HKUST, that had started working in the finance industry, back in 2014 asked me about the VIX. He could not figure out why the VIX, coined as — by the exchange, was calculated the way it was.&lt;/p&gt;
+&lt;p&gt;Four years ago a friend from HKUST, that had started working in the finance industry, back in 2014 asked me about the VIX. He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this &lt;a href=&#34;https://www.cboe.com/micro/vix/vixwhite.pdf&#34;&gt;white paper&lt;/a&gt;). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.&lt;/p&gt;
+&lt;p&gt;After lots of reading I figured it out. Here is what I was able to collect:&lt;/p&gt;
 &lt;div id=&#34;variance-swap&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Variance Swap&lt;/h2&gt;
 &lt;p&gt;Before we start the calculations it should be noted that: At maturity, the payoff of a variance swap is &lt;span class=&#34;math display&#34;&gt;\[

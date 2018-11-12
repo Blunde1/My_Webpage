@@ -18,8 +18,7 @@
       <pubDate>Mon, 12 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/post/the-fear-index-vix-and-variance-swaps/</guid>
-      <description>Four years ago a friend from HKUST, that had started working in the finance industry, back in 2014 asked me about the VIX. He could not figure out why the VIX, coined as — by the exchange, was calculated the way it was.
-Variance SwapBefore we start the calculations it should be noted that: At maturity, the payoff of a variance swap is \[\begin{align*}10000N(\Sigma^2-K_{var})\end{align*}\] where</description>
+      <description>Four years ago a friend from HKUST, that had started working in the finance industry, back in 2014 asked me about the VIX. He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this white paper). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.</description>
     </item>
     
   </channel>
