@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this white paper). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
+  <meta name="description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/the-fear-index-vix-and-variance-swaps/">
@@ -95,7 +95,7 @@
   <meta property="og:site_name" content="Berent Å. S. Lunde">
   <meta property="og:url" content="/post/the-fear-index-vix-and-variance-swaps/">
   <meta property="og:title" content="The fear index, VIX and variance swaps | Berent Å. S. Lunde">
-  <meta property="og:description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this white paper). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
+  <meta property="og:description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
   
   
     
@@ -425,13 +425,14 @@
       
 
 
-<p>Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this <a href="https://www.cboe.com/micro/vix/vixwhite.pdf">white paper</a>). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.</p>
-<p>After lots of reading I figured it out. Here is what I was able to collect:</p>
+<p>Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this <a href="https://www.cboe.com/micro/vix/vixwhite.pdf">white paper</a>) – specifically he was curious about the reason for the term <span class="math inline">\(1/K^2\)</span>. Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.</p>
+<p>After lots of reading, I was able to connect the dots, summarized here in two parts. The key insights of the first part was found from digging in the references to this <a href="https://en.wikipedia.org/wiki/Variance_swap">wikipedia page</a>; see the appendices in the articles <a href="https://faculty.baruch.cuny.edu/lwu/papers/CarrWuRFS2009.pdf">here</a> and <a href="http://pricing.online.fr/docs/TradingVolatilityStrat.pdf">here</a>. For the second part I am sad to say I do not remember the references (but I will keep digging).</p>
+<p>I believe this is part of the theory that makes financial mathematics beautiful. My reasons for posting this is due to this inherent beauty, and that I do not want to forget certain insights. Moreover, I hope this can serve some educational purpose for aspiring quants.</p>
 <div id="variance-swap" class="section level2">
 <h2>Variance Swap</h2>
-<p>Before we start the calculations it should be noted that: At maturity, the payoff of a variance swap is <span class="math display">\[
+<p>Before we start the calculations it should be noted that, at maturity, the payoff of a variance swap is <span class="math display">\[
 \begin{align*}
-10000N(\Sigma^2-K_{var})
+10000N(\Sigma^2-K_{var}),
 \end{align*}
 \]</span> where</p>
 <ul>
@@ -445,23 +446,21 @@
 dS_t&amp;=\mu_tS_tdt+\sigma_tS_tdB_t.
 \end{align*}
 \]</span></p>
-<p>(<span class="math inline">\(\mu\)</span> is usually set to be the short rate <span class="math inline">\(r\)</span>)</p>
-<p>This is probably the most famous stochastic differential equation which we solve using Itô’s lemma (this is probably trivial to you, but I don’t know how much you know so please don’t be offended that I’m showing this).\</p>
-<p>Use the substitution <span class="math inline">\(Y_t=\log (S_t)\)</span> and apply It^o’s Lemma to the function <span class="math inline">\(f(t,x):=\log (x)\)</span>. The partial derivatives are</p>
+<p>This can be solved using everyones favourite lemma, Itô’s lemma: Use the substitution <span class="math inline">\(Y_t=\log (S_t)\)</span> and apply It^o’s Lemma to the function <span class="math inline">\(f(t,x):=\log (x)\)</span>. The partial derivatives are</p>
 <p><span class="math display">\[
 \begin{align}
 \frac{\partial f}{\partial t}(t,X_t)=0,\;
 \frac{\partial f}{\partial x}(t,X_t)=\frac{1}{S_t},\;
 \frac{\partial^2 f}{\partial^2 x}(t,X_t)=-\frac{1}{S_t^2}. 
 \end{align}
-\]</span> Thus we obtain <span class="math display">\[
+\]</span> Thus, we obtain <span class="math display">\[
 \begin{align*}
 dY_t&amp;=\left(\frac{\mu_tS_t}{S_t}-\frac{\sigma_t^2S_t^2}{2S_t^2}\right)dt+
 \frac{\sigma_tS_t}{S_t}dB_t \text{ by It\^o&#39;s Lemma} \\
-&amp;=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t
+&amp;=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t.
 \end{align*}
 \]</span></p>
-<p>Dividing the equation for <span class="math inline">\(dS_t\)</span> with <span class="math inline">\(S_t\)</span> and subtracting this last equation we obtain:</p>
+<p>Dividing the equation for <span class="math inline">\(dS_t\)</span> with <span class="math inline">\(S_t\)</span> and subtracting this last equation we have:</p>
 <p><span class="math display">\[
 \begin{align*}
 \frac{dS_t}{S_t}-d(\log(S_t))&amp;=\mu_tdt+\sigma_tdB_t-\left(\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t\right)\\
@@ -474,7 +473,7 @@ Variance = \frac{1}{T}\int_{0}^{T}\sigma_t^2dt=\frac{2}{T}\left(\int_{0}^{T}\fra
 \]</span></p>
 <p>Notice that <span class="math display">\[
 \begin{align*}
-\log\left(\frac{S_T}{S_0}\right)=\log\left(\frac{S_T}{S^*}\right)+\log\left(\frac{S^*}{S_0}\right)
+\log\left(\frac{S_T}{S_0}\right)=\log\left(\frac{S_T}{S^*}\right)+\log\left(\frac{S^*}{S_0}\right).
 \end{align*}
 \]</span></p>
 <p>We now make use of the dirac delta function (<span class="math inline">\(\delta(x)=\infty\)</span> if <span class="math inline">\(x=0\)</span>, <span class="math inline">\(0\)</span> otherwise) to write on <span class="math inline">\(-\log\left(\frac{S_T}{S_*}\right)\)</span> and then integrate by parts twice (this is where the <span class="math inline">\(1/K^2\)</span> comes from):</p>
@@ -490,20 +489,20 @@ Variance = \frac{1}{T}\int_{0}^{T}\sigma_t^2dt=\frac{2}{T}\left(\int_{0}^{T}\fra
 &amp;=\frac{1}{S^*}\left(\left[S^*-S_T\right]^+-\left[S_T-S^*\right]^+\right)
 +\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK\\
 &amp;=\frac{1}{S^*}\left(S^*-S_T\right)
-+\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK
++\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK.
 \end{align*}
 \]</span></p>
-<p>This was kinda tedious, but this calculation is as noted before the reason for <span class="math inline">\(1/K^2\)</span> part in the final equation.\</p>
-<p>We now have the final equation for the variance</p>
+<p>This was kinda tedious, but this calculation is the reason for <span class="math inline">\(1/K^2\)</span> part in the final equation.</p>
+<p>We now have the final equation for the variance:</p>
 <p><span class="math display">\[
 \begin{align*}
 Variance=\frac{2}{T}\left(\int_{0}^{T}\frac{dS_t}{S_t}-\log(\frac{S^*}{S_0})
 +\frac{1}{S^*}\left(S^*-S_T\right)
 +\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK
-\right)
+\right).
 \end{align*}
 \]</span></p>
-<p>Just realizing I should have said that <span class="math inline">\(Variance = \Sigma^2\)</span> (realized variance in the underlying asset during the life of the swap). To avoid arbitrage in the payoff equation (equation located in the start) we have to set: <span class="math display">\[
+<p>Say <span class="math inline">\(Variance = \Sigma^2\)</span> (realized variance in the underlying asset during the life of the swap). To avoid arbitrage in the payoff equation (equation located in the start) we have to set: <span class="math display">\[
 \begin{align*}
 E[\Sigma^2]=K_{var},
 \end{align*}
@@ -512,29 +511,29 @@ E[\Sigma^2]=K_{var},
 \begin{align*}
 E\left[\int_{0}^{T}\frac{dS_t}{S_t}\right]&amp;=E\left[\int_{0}^{T}\mu_tdt+\int_{0}^{T}\sigma_tdB_t\right]=\mu T \text{ assuming }\mu\text{ is constant}\\
 E\left[\log(\frac{S^*}{S_0})\right]&amp;=\log(\frac{S^*}{S_0})\text{ they&#39;re just constants}\\
-E\left[S_T\right]&amp;=S_0e^{\mu T}\\
+E\left[S_T\right]&amp;=S_0e^{\mu T}.
 \end{align*}
 \]</span></p>
 <p>Also observe that the price of a put and a call option both with strike <span class="math inline">\(K\)</span> is <span class="math display">\[
 \begin{align*}
 P(K)&amp;=e^{-eT}E\left[\left(K-S_T\right)^+\right]\\
-C(K)&amp;=e^{-eT}E\left[\left(S_T-K\right)^+\right]\\
+C(K)&amp;=e^{-eT}E\left[\left(S_T-K\right)^+\right].
 \end{align*}
 \]</span></p>
-<p>Taking expectations of the equation for the realized variance we thus obtain</p>
+<p>Taking expectations of the equation for the realized variance we obtain</p>
 <p><span class="math display">\[
 \begin{align*}
 K_{var}=E[Variance]=\frac{2}{T}\left(\mu T-\left(\frac{S_O}{S^*}e^{\mu T}-1\right)
 -\log\left(\frac{S^*}{S_0}\right)
 +e^{\mu T}
 \int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK
-\right)
+\right).
 \end{align*}
 \]</span> Another way of writing this is: <span class="math display">\[
 \begin{align*}
 K_{var}&amp;=\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}
 \int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK
-\right)
+\right).
 \end{align*}
 \]</span> Now, making the smart choice of setting <span class="math inline">\(S^*=F_0=S_0e^{\mu T}\)</span> a lot cancel out and we have the final equation</p>
 <p><span class="math display">\[
@@ -544,22 +543,22 @@ K_{var}=\frac{2e^{\mu T}}{T}\left[\int_{0}^{F_0}\frac{P(K)}{K^2}dK+\int_{F_0}^{\
 \]</span></p>
 </div>
 <div id="relationship-between-variance-swap-and-the-vix" class="section level2">
-<h2>Relationship between variance swap and the VIX}</h2>
-<p>We now want to make a discretized version (the VIX) of our fair price variance swap formula. Assume that the price of options with strike prices <span class="math inline">\(K_i,\,(i=1:n)\)</span> are known and that <span class="math display">\[
+<h2>Relationship between variance swap and the VIX</h2>
+<p>We seek a discretized version (the VIX) of our fair price variance swap formula. Assume that the price of options with strike prices <span class="math inline">\(K_i,\,(i=1:n)\)</span> are known and that <span class="math display">\[
 \begin{align*}
-K_1&lt;K_2&lt;...&lt;K_n
+K_1&lt;K_2&lt;...&lt;K_n.
 \end{align*}
-\]</span> abd choose <span class="math inline">\(S^*\)</span> equal to the first strike price below <span class="math inline">\(F_0\)</span>, define the function</p>
+\]</span> Furthermore, choose <span class="math inline">\(S^*\)</span> equal to the first strike price below <span class="math inline">\(F_0\)</span>, define the function</p>
 <p><span class="math display">\[
 \begin{align*}
 Q(K_i)&amp;=P(K_i)1_{(K_i\leq S^*)}+C(K_i)1_{(S^*&lt;K_i)},
 \end{align*} 
 \]</span></p>
-<p>then approximate the integrals as following</p>
+<p>and then approximate the integrals as following</p>
 <p><span class="math display">\[
 \begin{align*}
 e^{\mu T}
-\int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK=e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)
+\int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK=e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i),
 \end{align*}
 \]</span></p>
 <p>where <span class="math display">\[
@@ -571,15 +570,15 @@ e^{\mu T}
 \]</span></p>
 <p>Set this aproximation inside the equation for fair variance swap with and we obtain <span class="math display">\[
 \begin{align*}
-K_{var}\approx\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)\right)
+K_{var}\approx\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)\right).
 \end{align*}
 \]</span></p>
 <p>The maclaurin polynomial for <span class="math inline">\(\log(F_0/S^*)\)</span> is <span class="math display">\[
 \begin{align*}
-\log\left(\frac{F_0}{S^*}\right)&amp;=\left(\frac{F_0}{S^*}-1\right)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2+O\left(\left(\frac{F_0}{S^*}-1\right)^2\right)
+\log\left(\frac{F_0}{S^*}\right)&amp;=\left(\frac{F_0}{S^*}-1\right)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2+O\left(\left(\frac{F_0}{S^*}-1\right)^2\right).
 \end{align*}
 \]</span></p>
-<p>Thus <span class="math display">\[
+<p>Thus, <span class="math display">\[
 \begin{align*}
 \log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)
 =-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2+O\left(\left(\frac{F_0}{S^*}-1\right)^2\right),
@@ -587,7 +586,7 @@ K_{var}\approx\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}
 \]</span> and we obtain our final approximation</p>
 <p><span class="math display">\[
 \begin{align*}
-K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2
+K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2,
 \end{align*}
 \]</span> which we recognize as the fomula for the VIX.</p>
 <p>Remember that the underlying “stock” here is the S&amp;P500 index! I am note sure if there are call and put options that has the S&amp;P as underlying, if there isn’t, you should use underlying stocks that is highly correlated (beta) with the S&amp;P and calculate the VIX for all of them and maybe take the average.</p>
@@ -697,7 +696,7 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
         
       
       <li>
-        <a itemprop="sameAs" href="/files/bl_cv18_en_31052018.pdf" >
+        <a itemprop="sameAs" href="/files/cv.pdf" >
           <i class="ai ai-cv"></i>
         </a>
       </li>
