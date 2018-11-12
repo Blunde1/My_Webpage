@@ -12,7 +12,8 @@ image:
   focal_point: ''
 ---
 
-Four years ago a friend from HKUST that had started working in the finance industry asked me about the VIX.
+
+Four years ago a friend from HKUST, that had started working in the finance industry, back in 2014 asked me about the VIX.
 He could not figure out why the VIX, coined as --- by the exchange, was calculated the way it was.
 
 ## Variance Swap
