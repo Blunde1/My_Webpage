@@ -1,3 +1,11 @@
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+*.dll
+*.o
+.Rproj.user
+
 # History files
 .Rhistory
 .Rapp.history
