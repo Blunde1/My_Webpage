@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>Information efficient gradient tree boosting</title>
+      <link>/slides/mlmeetup/mlmeetup_presentation_bl/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/slides/mlmeetup/mlmeetup_presentation_bl/</guid>
+      <description>OutlineBackgroundSupervised learningGradient boostingInformation efficient GTBFrequency domainJapanese tricksBottoms upExperimental illustrationsBiasConvergenceComparisonsRecap and possibilitiesBackgroundSupervised learningSupervised learningMapping \(f:A \rightarrow B\) using a finite dataset.What is a good model?A model that generalises well to unseen data.Generalises: average over new datawell: minimises Loss\(\tilde{f} = \arg\min_f {\mathbb{E}}_{\hat{w}}{\mathbb{E}}_{{\mathbf{x}},{y}}\left[{\mathcal{L}}\left({y}, f({\mathbf{x}}; \hat{w})\right)\right]\)Gradient boostingAlgorithm:</description>
+    </item>
+    
+    <item>
       <title>Slides</title>
       <link>/slides/example-slides/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

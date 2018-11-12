@@ -1,0 +1,43 @@
+\documentclass{article}
+\include{preview}
+\usepackage[pdftex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{amsmath,amsfonts,amssymb,amscd,xspace}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows,shapes,positioning,arrows.meta}
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+	\begin{tikzpicture}
+
+% Nodes
+\node (p1) at (0,0) {$p_{X_1}(x) $};
+\node (p2) [below= 0.2cm of p1] {$p_{X_1}(x) $};
+\node (vd1) [below= 0.2cm of p2] {$\vdots$};
+\node (pn) [below= 0.2cm of vd1] {$p_{X_n}(x) $};
+
+\node (ft1) [right = 0.5cm of p1] {$\varphi_{X_1}(s)$};
+\node (ft2) [right = 0.5cm of p2] {$\varphi_{X_2}(s)$};
+\node (vd2) [below= 0.2cm of ft2] {$\vdots$};
+\node (ftn) [right = 0.5cm of pn] {$\varphi_{X_n}(s)$};
+
+\node (cfn) [right= 0.5cm of vd2] {$\varphi_{\sum X_i}(s) $};
+
+\node (psumn) [right= 0.5cm of cfn] {$p_{\sum X_i}(x) $};
+
+
+% Arrows
+\draw [->] (p1) -- node [above] {FT}  (ft1);
+\draw [->] (p2) --   (ft2);
+\draw [->] (pn) --   (ftn);
+
+\draw [->] (ft1) -- node[auto]{Product}  (cfn);
+\draw [->] (ft2) --  (cfn);
+\draw [->] (ftn) --  (cfn);
+
+\draw [->] (cfn) -- node[above]{IFT} (psumn);
+
+\end{tikzpicture}
+\end{preview}
+\end{document}

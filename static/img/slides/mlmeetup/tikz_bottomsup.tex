@@ -1,0 +1,63 @@
+\documentclass{article}
+\include{preview}
+\usepackage[pdftex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,positioning,arrows.meta}
+\usetikzlibrary{matrix}
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+\tikzset{
+		treenode/.style = {align=center, inner sep=0pt, text centered, font=\sffamily},
+		level0/.style = {treenode, circle, black, draw=black, %white
+			fill=white, text width=1.5em, very thick},
+		level1/.style = {treenode, circle, black, draw=blue, %blue 
+			text width=1.5em, very thick},
+		level2/.style = {treenode, circle, black, draw=red,  % red
+			text width=1.5em, very thick},
+		level3/.style = {treenode, circle, black, draw=green,  % red
+			text width=1.5em, very thick}
+	}
+		\begin{tikzpicture}[->,>=stealth',level/.style={sibling distance = 3cm/#1,
+			level distance = 1.5cm}] 
+		
+		% text
+		\node at (-4,1) {\underline{Depth}};
+		\node at (-4,0) {0};
+		\draw [-,dashed] (-4,-0.5) -- (10,-0.5);
+		\node at (-4,-1.5) {1};
+		\draw [-,dashed] (-4,-2) -- (10,-2);
+		\node at (-4,-3) {2};
+		\draw [-,dashed] (-4,-3.5) -- (10,-3.5);
+		
+		% tree 1
+		\node [level0] at (0,0) {8}
+		child{ node [level1] {5} 
+			child{ node [level2] {1} }
+			child{ node [level2] {2} }                            
+		}
+		child{ node [level1] {4}
+			child{ node [level2] {3} }
+			child{ node [level2] {2} }
+		}
+		; 
+		\draw (-2.8,-3.5) rectangle (-0.2,-1); 
+		\draw (0.2,-3.5) rectangle (2.8,-1);
+		
+		% arrow
+		\draw[->, very thick] (1.5,-0.5) -- node [above=0.5em ] {Iterate} (5,-0.5) ;
+		
+		% tree 2
+		\node [level0] at (7,0) {8}
+		child{ node [level1] {5} 
+			child{ node [level2] {1} }
+			child{ node [level2] {2} }                            
+		}
+		child{ node [level1] {4}}
+		; 
+		\draw (4.2,-3.5) rectangle (9.3,0.5);
+		
+		\end{tikzpicture}	
+\end{preview}
+\end{document}

@@ -1,0 +1,25 @@
+\documentclass{article}
+\include{preview}
+\usepackage[pdftex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
+\begin{document}
+\begin{preview}
+	\begin{algorithmic}[1]
+		
+		\State Input tree $f$
+		\State Input \texttt{max\_depth}
+		\For{  $d=(\texttt{max\_depth}-1):0$}
+		\State sub trees $=$ Traverse$(f; \text{depth} = d)$
+		\ForAll{sub trees}
+		\If{$\sum$\text{leaf expected loss} $\geq$ root expected loss}
+		\State Prune to root of sub tree
+		\EndIf
+		\EndFor
+		\EndFor
+		\State return pruned $f$.
+	\end{algorithmic}
+\end{preview}
+\end{document}

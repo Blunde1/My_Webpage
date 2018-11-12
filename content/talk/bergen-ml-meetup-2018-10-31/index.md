@@ -1,26 +1,26 @@
 +++
-title = "Test header"
+title = "Information efficient gradient tree boosting"
 date = 2017-01-01T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2030-06-01T13:00:00
-time_end = 2030-06-01T15:00:00
+time_start = 2018-10-31T17:00:00
+time_end = 2030-06-01T19:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["Berent Lunde"]
 
 # Abstract and optional shortened version.
-abstract = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam."
-abstract_short = "An example talk using Academic's Markdown slides feature."
+abstract = "At the next Bergen Machine Learning meetup I will lecture on some of my work with gradient boosting algorithms: by coupling information theory, the frequency domain and tree-boosting, the algorithm can adaptively learn the optimal structure of individual trees, and how many trees that should be added; regularization is redundant. This is nice as there are no worries of overfitting, the computational cost is drastically reduced, and it facilitates the democratization of machine learning."
+abstract_short = "Bergen ML Meetup, presentation on information adaptive boosting."
 
 # Name of event and optional event URL.
-event = "Academic Theme Conference"
-event_url = "https://example.org"
+event = "Bergen Machine Learning meetup"
+event_url = "https://www.meetup.com/bergen-machine-learning/events/255094157/"
 
 # Location of event.
-location = "London, United Kingdom"
+location = "DNB, Bergen, Norway"
 
 # Is this a selected talk? (true/false)
 selected = false
@@ -35,7 +35,7 @@ projects = ["internal-project"]
 
 # Tags (optional).
 #   Set `tags = []` for no tags, or use the form `tags = ["A Tag", "Another Tag"]` for one or more tags.
-tags = []
+tags = ["Boosting", "Machine-Learning"]
 
 # Slides (optional).
 #   Associate this talk with Markdown slides.
@@ -43,7 +43,8 @@ tags = []
 #   E.g. `slides = "example-slides"` references 
 #   `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides = "example-slides"
+#slides = "mlmeetup/mlmeetup_presentation_bl"
+#slides = ""
 
 # Links (optional).
 url_pdf = ""
@@ -65,14 +66,4 @@ math = true
   focal_point = "Right"
 +++
 
-{{% alert note %}}
-Click on the **Slides** button above to view the built-in slides feature.
-{{% /alert %}}
-
-Slides can be added in a few ways:
-
-- **Create** slides using Academic's *Slides* feature and link using `url_slides` parameter in the front matter of the talk file
-- **Upload** an existing slide deck to `static/` and link using `url_slides` parameter in the front matter of the talk file
-- **Embed** your slides (e.g. Google Slides) or presentation video on this page using [shortcodes](https://sourcethemes.com/academic/docs/writing-markdown-latex/).
-
-Further talk details can easily be added to this page using *Markdown* and $\rm \LaTeX$ math code.
+A repository for the presentation can be found at [here](https://github.com/bergen-ml/2018-10-31-lunde).
