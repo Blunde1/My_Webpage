@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Berent Å. S. Lunde</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Berent Å. S. Lunde</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0200</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Academic</title>
+      <link>/tags/academic/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0200</pubDate>
+      
+      <guid>/tags/academic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Aquahack</title>
+      <link>/tags/aquahack/</link>
+      <pubDate>Sat, 12 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/tags/aquahack/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Boosting</title>
+      <link>/tags/boosting/</link>
+      <pubDate>Mon, 12 Nov 2018 00:00:00 +0100</pubDate>
+      
+      <guid>/tags/boosting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computational statistics</title>
+      <link>/tags/computational-statistics/</link>
+      <pubDate>Mon, 12 Nov 2018 00:00:00 +0100</pubDate>
+      
+      <guid>/tags/computational-statistics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Science</title>
+      <link>/tags/data-science/</link>
+      <pubDate>Sat, 12 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/tags/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hackathon</title>
+      <link>/tags/hackathon/</link>
+      <pubDate>Sat, 12 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/tags/hackathon/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine-Learning</title>
+      <link>/tags/machine-learning/</link>
+      <pubDate>Mon, 12 Nov 2018 00:00:00 +0100</pubDate>
+      
+      <guid>/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R Markdown</title>
+      <link>/tags/r-markdown/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/r-markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plot</title>
+      <link>/tags/plot/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/plot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>regression</title>
+      <link>/tags/regression/</link>
+      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/regression/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
