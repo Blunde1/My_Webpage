@@ -14,16 +14,22 @@ image:
 
 
 Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX.
-He could not figure out why the CBOE VIX volatility index, popularly called the fear index, was calculated the way it was (see this [white paper](https://www.cboe.com/micro/vix/vixwhite.pdf)).
+He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this [white paper](https://www.cboe.com/micro/vix/vixwhite.pdf)) -- specifically he was curious about the reason for the term $1/K^2$.
 Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.
 
-After lots of reading I figured it out. Here is what I was able to collect:
+After lots of reading, I was able to connect the dots, summarized here in two parts.
+The key insights of the first part was found from digging in the references to this [wikipedia page](https://en.wikipedia.org/wiki/Variance_swap); see the appendices in the articles [here](https://faculty.baruch.cuny.edu/lwu/papers/CarrWuRFS2009.pdf) and [here](http://pricing.online.fr/docs/TradingVolatilityStrat.pdf).
+For the second part I am sad to say I do not remember the references (but I will keep digging).
+
+I believe this is part of the theory that makes financial mathematics beautiful.
+My reasons for posting this is due to this inherent beauty, and that I do not want to forget certain insights.
+Moreover, I hope this can serve some educational purpose for aspiring quants. 
 
 ## Variance Swap
-Before we start the calculations it should be noted that: At maturity, the payoff of a variance swap is
+Before we start the calculations it should be noted that, at maturity, the payoff of a variance swap is
 $$
 \begin{align*}
-10000N(\Sigma^2-K_{var})
+10000N(\Sigma^2-K_{var}),
 \end{align*}
 $$
 where 
@@ -41,10 +47,7 @@ dS_t&=\mu_tS_tdt+\sigma_tS_tdB_t.
 \end{align*}
 $$
 
-($\mu$ is usually set to be the short rate $r$)
-
-This is probably the most famous stochastic differential equation which we solve using Itô's lemma (this is probably trivial to you, but I don't know how much you know so please don't be offended that I'm showing this).\\
-
+This can be solved using everyones favourite lemma, Itô's lemma:
 Use the substitution $Y_t=\log (S_t)$ and apply It\^o's Lemma to the function $f(t,x):=\log (x)$.
 The partial derivatives are
 
@@ -55,16 +58,16 @@ $$
 \frac{\partial^2 f}{\partial^2 x}(t,X_t)=-\frac{1}{S_t^2}. 
 \end{align}
 $$
-Thus we obtain 
+Thus, we obtain 
 $$
 \begin{align*}
 dY_t&=\left(\frac{\mu_tS_t}{S_t}-\frac{\sigma_t^2S_t^2}{2S_t^2}\right)dt+
 \frac{\sigma_tS_t}{S_t}dB_t \text{ by It\^o's Lemma} \\
-&=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t
+&=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t.
 \end{align*}
 $$
 
-Dividing the equation for $dS_t$ with $S_t$ and subtracting this last equation we obtain:
+Dividing the equation for $dS_t$ with $S_t$ and subtracting this last equation we have:
 
 $$
 \begin{align*}
@@ -82,7 +85,7 @@ $$
 Notice that
 $$
 \begin{align*}
-\log\left(\frac{S_T}{S_0}\right)=\log\left(\frac{S_T}{S^*}\right)+\log\left(\frac{S^*}{S_0}\right)
+\log\left(\frac{S_T}{S_0}\right)=\log\left(\frac{S_T}{S^*}\right)+\log\left(\frac{S^*}{S_0}\right).
 \end{align*}
 $$
 
@@ -100,24 +103,24 @@ $$
 &=\frac{1}{S^*}\left(\left[S^*-S_T\right]^+-\left[S_T-S^*\right]^+\right)
 +\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK\\
 &=\frac{1}{S^*}\left(S^*-S_T\right)
-+\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK
++\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK.
 \end{align*}
 $$
 
-This was kinda tedious, but this calculation is as noted before the reason for $1/K^2$ part in the final equation.\\
+This was kinda tedious, but this calculation is the reason for $1/K^2$ part in the final equation.
 
-We now have the final equation for the variance
+We now have the final equation for the variance:
 
 $$
 \begin{align*}
 Variance=\frac{2}{T}\left(\int_{0}^{T}\frac{dS_t}{S_t}-\log(\frac{S^*}{S_0})
 +\frac{1}{S^*}\left(S^*-S_T\right)
 +\int_{0}^{S^*}\frac{1}{K^2}[K-S_T]^+dK+\int_{S^*}^{\infty}\frac{1}{K^2}[S_T-K]^+dK
-\right)
+\right).
 \end{align*}
 $$
 
-Just realizing I should have said that $Variance = \Sigma^2$ (realized variance in the underlying asset during the life of the swap). To avoid arbitrage in the payoff equation (equation located in the start) we have to set:
+Say $Variance = \Sigma^2$ (realized variance in the underlying asset during the life of the swap). To avoid arbitrage in the payoff equation (equation located in the start) we have to set:
 $$
 \begin{align*}
 E[\Sigma^2]=K_{var},
@@ -130,7 +133,7 @@ $$
 \begin{align*}
 E\left[\int_{0}^{T}\frac{dS_t}{S_t}\right]&=E\left[\int_{0}^{T}\mu_tdt+\int_{0}^{T}\sigma_tdB_t\right]=\mu T \text{ assuming }\mu\text{ is constant}\\
 E\left[\log(\frac{S^*}{S_0})\right]&=\log(\frac{S^*}{S_0})\text{ they're just constants}\\
-E\left[S_T\right]&=S_0e^{\mu T}\\
+E\left[S_T\right]&=S_0e^{\mu T}.
 \end{align*}
 $$
 
@@ -138,11 +141,11 @@ Also observe that the price of a put and a call option both with strike $K$ is
 $$
 \begin{align*}
 P(K)&=e^{-eT}E\left[\left(K-S_T\right)^+\right]\\
-C(K)&=e^{-eT}E\left[\left(S_T-K\right)^+\right]\\
+C(K)&=e^{-eT}E\left[\left(S_T-K\right)^+\right].
 \end{align*}
 $$
 
-Taking expectations of the equation for the realized variance we thus obtain 
+Taking expectations of the equation for the realized variance we obtain 
 
 $$
 \begin{align*}
@@ -150,7 +153,7 @@ K_{var}=E[Variance]=\frac{2}{T}\left(\mu T-\left(\frac{S_O}{S^*}e^{\mu T}-1\righ
 -\log\left(\frac{S^*}{S_0}\right)
 +e^{\mu T}
 \int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK
-\right)
+\right).
 \end{align*}
 $$
 Another way of writing this is:
@@ -158,7 +161,7 @@ $$
 \begin{align*}
 K_{var}&=\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}
 \int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK
-\right)
+\right).
 \end{align*}
 $$
 Now, making the smart choice of setting $S^*=F_0=S_0e^{\mu T}$ a lot cancel out and we have the final equation
@@ -170,16 +173,17 @@ K_{var}=\frac{2e^{\mu T}}{T}\left[\int_{0}^{F_0}\frac{P(K)}{K^2}dK+\int_{F_0}^{\
 $$
 
 
-## Relationship between variance swap and the VIX}
+## Relationship between variance swap and the VIX
 
 
-We now want to make a discretized version (the VIX) of our fair price variance swap formula. Assume that the price of options with strike prices $K_i,\,(i=1:n)$ are known and that
+We seek a discretized version (the VIX) of our fair price variance swap formula. 
+Assume that the price of options with strike prices $K_i,\,(i=1:n)$ are known and that
 $$
 \begin{align*}
-K_1<K_2<...<K_n
+K_1<K_2<...<K_n.
 \end{align*}
 $$
-abd choose $S^*$ equal to the first strike price below $F_0$, define the function
+Furthermore, choose $S^*$ equal to the first strike price below $F_0$, define the function
 
 $$
 \begin{align*}
@@ -187,12 +191,12 @@ Q(K_i)&=P(K_i)1_{(K_i\leq S^*)}+C(K_i)1_{(S^*<K_i)},
 \end{align*} 
 $$
 
-then approximate the integrals as following
+and then approximate the integrals as following
 
 $$
 \begin{align*}
 e^{\mu T}
-\int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK=e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)
+\int_{0}^{S^*}\frac{P(K)}{K^2}dK+e^{\mu T}\int_{S^*}^{\infty}\frac{C(K)}{K^2}dK=e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i),
 \end{align*}
 $$
 
@@ -208,18 +212,18 @@ $$
 Set this aproximation inside the equation for fair variance swap with and we obtain
 $$
 \begin{align*}
-K_{var}\approx\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)\right)
+K_{var}\approx\frac{2}{T}\left(\log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)+e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)\right).
 \end{align*}
 $$
 
 The maclaurin polynomial for $\log(F_0/S^*)$ is
 $$
 \begin{align*}
-\log\left(\frac{F_0}{S^*}\right)&=\left(\frac{F_0}{S^*}-1\right)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2+O\left(\left(\frac{F_0}{S^*}-1\right)^2\right)
+\log\left(\frac{F_0}{S^*}\right)&=\left(\frac{F_0}{S^*}-1\right)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2+O\left(\left(\frac{F_0}{S^*}-1\right)^2\right).
 \end{align*}
 $$
 
-Thus
+Thus,
 $$
 \begin{align*}
 \log\left(\frac{F_o}{S^*}\right)-\left(\frac{F_0}{S^*}-1\right)
@@ -230,7 +234,7 @@ and we obtain our final approximation
 
 $$
 \begin{align*}
-K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2
+K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\frac{1}{2}\left(\frac{F_0}{S^*}-1\right)^2,
 \end{align*}
 $$
 which we recognize as the fomula for the VIX.
