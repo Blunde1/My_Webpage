@@ -13,7 +13,7 @@ image:
 ---
 
 ## Variance Swap
-Before we start the (too long) calculations it should be noted that: At maturity, the payoff of a variance swap is
+Before we start the calculations it should be noted that: At maturity, the payoff of a variance swap is
 $$
 \begin{align*}
 10000N(\Sigma^2-K_{var})
