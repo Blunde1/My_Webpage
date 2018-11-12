@@ -15,7 +15,7 @@
   
     
   
-  <meta name="description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
+  <meta name="description" content="Four years ago, back in 2014, a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/the-fear-index-vix-and-variance-swaps/">
@@ -95,7 +95,7 @@
   <meta property="og:site_name" content="Berent Å. S. Lunde">
   <meta property="og:url" content="/post/the-fear-index-vix-and-variance-swaps/">
   <meta property="og:title" content="The fear index, VIX and variance swaps | Berent Å. S. Lunde">
-  <meta property="og:description" content="Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
+  <meta property="og:description" content="Four years ago, back in 2014, a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this white paper) – specifically he was curious about the reason for the term \(1/K^2\). Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.">
   
   
     
@@ -425,7 +425,7 @@
       
 
 
-<p>Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this <a href="https://www.cboe.com/micro/vix/vixwhite.pdf">white paper</a>) – specifically he was curious about the reason for the term <span class="math inline">\(1/K^2\)</span>. Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.</p>
+<p>Four years ago, back in 2014, a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this <a href="https://www.cboe.com/micro/vix/vixwhite.pdf">white paper</a>) – specifically he was curious about the reason for the term <span class="math inline">\(1/K^2\)</span>. Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.</p>
 <p>After lots of reading, I was able to connect the dots, summarized here in two parts. The key insights of the first part was found from digging in the references to this <a href="https://en.wikipedia.org/wiki/Variance_swap">wikipedia page</a>; see the appendices in the articles <a href="https://faculty.baruch.cuny.edu/lwu/papers/CarrWuRFS2009.pdf">here</a> and <a href="http://pricing.online.fr/docs/TradingVolatilityStrat.pdf">here</a>. For the second part I am sad to say I do not remember the references (but I will keep digging).</p>
 <p>I believe this is part of the theory that makes financial mathematics beautiful. My reasons for posting this is due to this inherent beauty, and that I do not want to forget certain insights. Moreover, I hope this can serve some educational purpose for aspiring quants.</p>
 <div id="variance-swap" class="section level2">
@@ -456,7 +456,7 @@ dS_t&amp;=\mu_tS_tdt+\sigma_tS_tdB_t.
 \]</span> Thus, we obtain <span class="math display">\[
 \begin{align*}
 dY_t&amp;=\left(\frac{\mu_tS_t}{S_t}-\frac{\sigma_t^2S_t^2}{2S_t^2}\right)dt+
-\frac{\sigma_tS_t}{S_t}dB_t \text{ by It\^o&#39;s Lemma} \\
+\frac{\sigma_tS_t}{S_t}dB_t \text{ by Itô&#39;s Lemma} \\
 &amp;=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t.
 \end{align*}
 \]</span></p>

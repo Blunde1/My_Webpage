@@ -19,7 +19,7 @@
       <description>
 
 
-&lt;p&gt;Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this &lt;a href=&#34;https://www.cboe.com/micro/vix/vixwhite.pdf&#34;&gt;white paper&lt;/a&gt;) – specifically he was curious about the reason for the term &lt;span class=&#34;math inline&#34;&gt;\(1/K^2\)&lt;/span&gt;. Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.&lt;/p&gt;
+&lt;p&gt;Four years ago, back in 2014, a friend from HKUST, that had started working in the finance industry, asked me about the VIX. He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this &lt;a href=&#34;https://www.cboe.com/micro/vix/vixwhite.pdf&#34;&gt;white paper&lt;/a&gt;) – specifically he was curious about the reason for the term &lt;span class=&#34;math inline&#34;&gt;\(1/K^2\)&lt;/span&gt;. Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.&lt;/p&gt;
 &lt;p&gt;After lots of reading, I was able to connect the dots, summarized here in two parts. The key insights of the first part was found from digging in the references to this &lt;a href=&#34;https://en.wikipedia.org/wiki/Variance_swap&#34;&gt;wikipedia page&lt;/a&gt;; see the appendices in the articles &lt;a href=&#34;https://faculty.baruch.cuny.edu/lwu/papers/CarrWuRFS2009.pdf&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;http://pricing.online.fr/docs/TradingVolatilityStrat.pdf&#34;&gt;here&lt;/a&gt;. For the second part I am sad to say I do not remember the references (but I will keep digging).&lt;/p&gt;
 &lt;p&gt;I believe this is part of the theory that makes financial mathematics beautiful. My reasons for posting this is due to this inherent beauty, and that I do not want to forget certain insights. Moreover, I hope this can serve some educational purpose for aspiring quants.&lt;/p&gt;
 &lt;div id=&#34;variance-swap&#34; class=&#34;section level2&#34;&gt;
@@ -50,7 +50,7 @@ dS_t&amp;amp;=\mu_tS_tdt+\sigma_tS_tdB_t.
 \]&lt;/span&gt; Thus, we obtain &lt;span class=&#34;math display&#34;&gt;\[
 \begin{align*}
 dY_t&amp;amp;=\left(\frac{\mu_tS_t}{S_t}-\frac{\sigma_t^2S_t^2}{2S_t^2}\right)dt+
-\frac{\sigma_tS_t}{S_t}dB_t \text{ by It\^o&amp;#39;s Lemma} \\
+\frac{\sigma_tS_t}{S_t}dB_t \text{ by Itô&amp;#39;s Lemma} \\
 &amp;amp;=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t.
 \end{align*}
 \]&lt;/span&gt;&lt;/p&gt;

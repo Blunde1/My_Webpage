@@ -13,7 +13,7 @@ image:
 ---
 
 
-Four years ago back in 2014 a friend from HKUST, that had started working in the finance industry, asked me about the VIX.
+Four years ago, back in 2014, a friend from HKUST, that had started working in the finance industry, asked me about the VIX.
 He could not figure out why the CBOE volatility index, popularly called the fear index, was calculated the way it was (see this [white paper](https://www.cboe.com/micro/vix/vixwhite.pdf)) -- specifically he was curious about the reason for the term $1/K^2$.
 Pursuing the quest of understanding the VIX, I remember it felt like very few people truly understood what was going on, and that the ones that did had no interest in sharing their knowledge.
 
@@ -62,7 +62,7 @@ Thus, we obtain
 $$
 \begin{align*}
 dY_t&=\left(\frac{\mu_tS_t}{S_t}-\frac{\sigma_t^2S_t^2}{2S_t^2}\right)dt+
-\frac{\sigma_tS_t}{S_t}dB_t \text{ by It\^o's Lemma} \\
+\frac{\sigma_tS_t}{S_t}dB_t \text{ by Itô's Lemma} \\
 &=\left(\mu_t-\frac{\sigma_t^2}{2}\right)dt+\sigma_tdB_t.
 \end{align*}
 $$
