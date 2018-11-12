@@ -4,14 +4,6 @@
     
     <url>
     
-      <loc>/post/the-fear-index-vix-and-variance-swaps/</loc>
-      <lastmod>2018-11-12T00:00:00+00:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/project/nordic-quantlab/nql_project/</loc>
       <lastmod>2018-11-12T00:00:00+01:00</lastmod>
     </url>
@@ -94,6 +86,13 @@
     
       <loc>/publication/clothing-search/</loc>
       <lastmod>2013-07-01T00:00:00+02:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/post/2018-11-12-the-fear-index-vix-and-variance-swaps/</loc>
     </url>
     
   
@@ -207,24 +206,6 @@
     
       <loc>/publication_types/</loc>
       <lastmod>2013-07-01T00:00:00+02:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/categories/r/</loc>
-      <lastmod>2018-11-12T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/tags/r-markdown/</loc>
-      <lastmod>2018-11-12T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
