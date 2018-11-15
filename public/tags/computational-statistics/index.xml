@@ -36,7 +36,25 @@
       <pubDate>Wed, 20 Jun 2018 00:00:00 +0200</pubDate>
       
       <guid>/talk/ecosta-2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Finance in the frequency domain</title>
+      <link>/talk/dna-spring-2018/</link>
+      <pubDate>Thu, 03 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/talk/dna-spring-2018/</guid>
       <description>A repository for the presentation can be found at here.</description>
+    </item>
+    
+    <item>
+      <title>Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications</title>
+      <link>/talk/dna-aktfor-2017/</link>
+      <pubDate>Thu, 03 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/talk/dna-aktfor-2017/</guid>
+      <description>Slides for the presentation can be found at here.</description>
     </item>
     
   </channel>

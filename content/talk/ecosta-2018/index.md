@@ -65,5 +65,3 @@ math = true
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
   focal_point = "Right"
 +++
-
-A repository for the presentation can be found at [here](https://github.com/bergen-ml/2018-10-31-lunde).

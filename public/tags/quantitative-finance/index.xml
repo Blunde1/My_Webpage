@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Recent &amp; Upcoming Talks on Berent Å. S. Lunde</title>
-    <link>/talk/</link>
-    <description>Recent content in Recent &amp; Upcoming Talks on Berent Å. S. Lunde</description>
+    <title>Quantitative finance on Berent Å. S. Lunde</title>
+    <link>/tags/quantitative-finance/</link>
+    <description>Recent content in Quantitative finance on Berent Å. S. Lunde</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 03 May 2018 00:00:00 +0200</lastBuildDate>
     
-	<atom:link href="/talk/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/quantitative-finance/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Saddlepoint adjusted inversion of characteristic functions</title>
-      <link>/talk/ecosta-2018/</link>
-      <pubDate>Wed, 20 Jun 2018 00:00:00 +0200</pubDate>
-      
-      <guid>/talk/ecosta-2018/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>Finance in the frequency domain</title>
@@ -37,15 +28,6 @@
       
       <guid>/talk/dna-aktfor-2017/</guid>
       <description>Slides for the presentation can be found at here.</description>
-    </item>
-    
-    <item>
-      <title>Information efficient gradient tree boosting</title>
-      <link>/talk/bergen-ml-meetup-2018-10-31/</link>
-      <pubDate>Sun, 01 Jan 2017 00:00:00 +0100</pubDate>
-      
-      <guid>/talk/bergen-ml-meetup-2018-10-31/</guid>
-      <description>A repository for the presentation can be found at here.</description>
     </item>
     
   </channel>

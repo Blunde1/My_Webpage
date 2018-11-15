@@ -76,6 +76,22 @@
     
     <url>
     
+      <loc>/talk/dna-spring-2018/</loc>
+      <lastmod>2018-05-03T00:00:00+02:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/talk/dna-aktfor-2017/</loc>
+      <lastmod>2018-05-03T00:00:00+02:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/talk/bergen-ml-meetup-2018-10-31/</loc>
       <lastmod>2017-01-01T00:00:00+01:00</lastmod>
     </url>
@@ -206,6 +222,15 @@
     
       <loc>/publication_types/</loc>
       <lastmod>2018-11-15T00:00:00+01:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
+      <loc>/tags/quantitative-finance/</loc>
+      <lastmod>2018-05-03T00:00:00+02:00</lastmod>
       <priority>0</priority>
     </url>
     

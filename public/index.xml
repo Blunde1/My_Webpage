@@ -251,8 +251,7 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
       <pubDate>Wed, 20 Jun 2018 00:00:00 +0200</pubDate>
       
       <guid>/talk/ecosta-2018/</guid>
-      <description>&lt;p&gt;A repository for the presentation can be found at &lt;a href=&#34;https://github.com/bergen-ml/2018-10-31-lunde&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <description></description>
     </item>
     
     <item>
@@ -262,6 +261,26 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
       
       <guid>/project/aqualens/aqualens/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>Finance in the frequency domain</title>
+      <link>/talk/dna-spring-2018/</link>
+      <pubDate>Thu, 03 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/talk/dna-spring-2018/</guid>
+      <description>&lt;p&gt;A repository for the presentation can be found at &lt;a href=&#34;dna-spring-2018/DNA_BL_03052017.pdf&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications</title>
+      <link>/talk/dna-aktfor-2017/</link>
+      <pubDate>Thu, 03 May 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/talk/dna-aktfor-2017/</guid>
+      <description>&lt;p&gt;Slides for the presentation can be found at &lt;a href=&#34;http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>

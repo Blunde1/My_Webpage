@@ -15,10 +15,10 @@
   
     
   
-  <meta name="description" content="For certain types of statistical models, the characteristic function (Fourier transform) is available in closed form, whereas the probability density function has an intractable form, typically as an infinite sum of probability weighted densities. Important such examples include solutions of stochastic differential equations with jumps, the Tweedie model, and Poisson mixture models. We propose a novel and general numerical method for retrieving the probability density function from the characteristic function. Unlike methods based on direct application of quadrature to the inverse Fourier transform, the proposed method allows accurate evaluation of the log-probability density function arbitrarily far out in the tail. Moreover, unlike saddlepoint approximations, the proposed methodology can be made arbitrarily accurate. Owing to these properties, the proposed method is computationally stable and very accurate under log-likelihood optimisation. The method is illustrated for a normal variance-mean mixture, and in an application of maximum likelihood estimation to a jump diffusion model for financial data.">
+  <meta name="description" content="The Fourier transform from the time-domain to the frequency-domain is a powerful tool for an abundance of applications. In this lecture, the focus is on that of finance and risk. A brief introduction to the Fourier transform is given, and then an introduction to three motivating examples from my own research: 1. Likelihood estimation of stochastic differential equations with jumps. 2. Aggregating non-life risks and premium principles with KPI-target control. 3. Information efficient data-driven model selection in machine learning.">
 
   
-  <link rel="alternate" hreflang="en-us" href="/talk/ecosta-2018/">
+  <link rel="alternate" hreflang="en-us" href="/talk/dna-spring-2018/">
 
   
 
@@ -88,30 +88,30 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="/talk/ecosta-2018/">
+  <link rel="canonical" href="/talk/dna-spring-2018/">
 
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="Berent Å. S. Lunde">
-  <meta property="og:url" content="/talk/ecosta-2018/">
-  <meta property="og:title" content="Saddlepoint adjusted inversion of characteristic functions | Berent Å. S. Lunde">
-  <meta property="og:description" content="For certain types of statistical models, the characteristic function (Fourier transform) is available in closed form, whereas the probability density function has an intractable form, typically as an infinite sum of probability weighted densities. Important such examples include solutions of stochastic differential equations with jumps, the Tweedie model, and Poisson mixture models. We propose a novel and general numerical method for retrieving the probability density function from the characteristic function. Unlike methods based on direct application of quadrature to the inverse Fourier transform, the proposed method allows accurate evaluation of the log-probability density function arbitrarily far out in the tail. Moreover, unlike saddlepoint approximations, the proposed methodology can be made arbitrarily accurate. Owing to these properties, the proposed method is computationally stable and very accurate under log-likelihood optimisation. The method is illustrated for a normal variance-mean mixture, and in an application of maximum likelihood estimation to a jump diffusion model for financial data.">
+  <meta property="og:url" content="/talk/dna-spring-2018/">
+  <meta property="og:title" content="Finance in the frequency domain | Berent Å. S. Lunde">
+  <meta property="og:description" content="The Fourier transform from the time-domain to the frequency-domain is a powerful tool for an abundance of applications. In this lecture, the focus is on that of finance and risk. A brief introduction to the Fourier transform is given, and then an introduction to three motivating examples from my own research: 1. Likelihood estimation of stochastic differential equations with jumps. 2. Aggregating non-life risks and premium principles with KPI-target control. 3. Information efficient data-driven model selection in machine learning.">
   
   
     
   <meta property="og:image" content="/img/Berent_Profile_Picture.jpg">
   <meta property="og:locale" content="en-us">
   
-  <meta property="article:published_time" content="2018-06-20T00:00:00&#43;02:00">
+  <meta property="article:published_time" content="2018-05-03T00:00:00&#43;02:00">
   
-  <meta property="article:modified_time" content="2018-06-20T00:00:00&#43;02:00">
-  
-
+  <meta property="article:modified_time" content="2018-05-03T00:00:00&#43;02:00">
   
 
   
 
-  <title>Saddlepoint adjusted inversion of characteristic functions | Berent Å. S. Lunde</title>
+  
+
+  <title>Finance in the frequency domain | Berent Å. S. Lunde</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
@@ -297,7 +297,7 @@
 
 
 <div class="article-header d-xl-none">
-  <img src="/talk/ecosta-2018/featured_hu3ef4c5dfadbc32e86e5af05f8790bdc8_2996108_1600x400_fill_q90_box_right.jpg" class="article-banner" itemprop="image" alt="">
+  <img src="/talk/dna-spring-2018/featured_hub099b7059c0f19b5068497a08653ace0_204283_1600x400_fill_q90_box_right.jpg" class="article-banner" itemprop="image" alt="">
   <span class="article-header-caption">Image credit: <a href="https://unsplash.com/photos/bzdhc5b3Bxs" target="_blank"><strong>Unsplash</strong></a></span>
 </div>
 
@@ -306,7 +306,7 @@
   <div class="row">
     <div class="col-6">
       <div class="split-header-content">
-        <h1 itemprop="name">Saddlepoint adjusted inversion of characteristic functions</h1>
+        <h1 itemprop="name">Finance in the frequency domain</h1>
 
         
 
@@ -320,12 +320,6 @@
   <div>
     <span itemscope itemprop="author" itemtype="http://schema.org/Person">
       <span itemprop="name">Berent Å. S. Lunde</span>
-    </span>, 
-    <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Tore S. Kleppe</span>
-    </span>, 
-    <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Hans J. Skaug</span>
     </span>
     
   </div>
@@ -333,9 +327,9 @@
 
   <span class="article-date">
     
-    <meta content="2018-06-20 00:00:00 &#43;0200 CEST" itemprop="datePublished">
-    <time datetime="2018-06-20 00:00:00 &#43;0200 CEST" itemprop="dateModified">
-      Jun 20, 2018
+    <meta content="2018-05-03 00:00:00 &#43;0200 CEST" itemprop="datePublished">
+    <time datetime="2018-05-03 00:00:00 &#43;0200 CEST" itemprop="dateModified">
+      May 3, 2018
     </time>
   </span>
   <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
@@ -385,7 +379,13 @@
 
 
   
+    
+  
 
+
+<a class="btn btn-outline-primary my-1 mr-1" href="/dna-spring-2018/DNA_BL_03052017.pdf" target="_blank" rel="noopener">
+  PDF
+</a>
 
 
 
@@ -400,7 +400,7 @@
 
 
 
-
+  
 
 
 
@@ -416,35 +416,35 @@
   <ul class="share">
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions&amp;url=%2ftalk%2fecosta-2018%2f"
+         href="https://twitter.com/intent/tweet?text=Finance%20in%20the%20frequency%20domain&amp;url=%2ftalk%2fdna-spring-2018%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fecosta-2018%2f"
+         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fdna-spring-2018%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-facebook-f"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fecosta-2018%2f&amp;title=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fdna-spring-2018%2f&amp;title=Finance%20in%20the%20frequency%20domain"
          target="_blank" rel="noopener">
         <i class="fab fa-linkedin-in"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fecosta-2018%2f&amp;title=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions"
+         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fdna-spring-2018%2f&amp;title=Finance%20in%20the%20frequency%20domain"
          target="_blank" rel="noopener">
         <i class="fab fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions&amp;body=%2ftalk%2fecosta-2018%2f">
+         href="mailto:?subject=Finance%20in%20the%20frequency%20domain&amp;body=%2ftalk%2fdna-spring-2018%2f">
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -456,7 +456,7 @@
     </div>
     <div class="col-6">
       <div class="split-header-image">
-        <img src="/talk/ecosta-2018/featured_hu3ef4c5dfadbc32e86e5af05f8790bdc8_2996108_680x500_fill_q90_box_right.jpg" itemprop="image" alt="">
+        <img src="/talk/dna-spring-2018/featured_hub099b7059c0f19b5068497a08653ace0_204283_680x500_fill_q90_box_right.jpg" itemprop="image" alt="">
         <span class="article-header-caption">Image credit: <a href="https://unsplash.com/photos/bzdhc5b3Bxs" target="_blank"><strong>Unsplash</strong></a></span>
       </div>
     </div>
@@ -464,7 +464,7 @@
 </div>
 
 <div class="article-container d-xl-none">
-  <h1 itemprop="name">Saddlepoint adjusted inversion of characteristic functions</h1>
+  <h1 itemprop="name">Finance in the frequency domain</h1>
 
   
 
@@ -478,12 +478,6 @@
   <div>
     <span itemscope itemprop="author" itemtype="http://schema.org/Person">
       <span itemprop="name">Berent Å. S. Lunde</span>
-    </span>, 
-    <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Tore S. Kleppe</span>
-    </span>, 
-    <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Hans J. Skaug</span>
     </span>
     
   </div>
@@ -491,9 +485,9 @@
 
   <span class="article-date">
     
-    <meta content="2018-06-20 00:00:00 &#43;0200 CEST" itemprop="datePublished">
-    <time datetime="2018-06-20 00:00:00 &#43;0200 CEST" itemprop="dateModified">
-      Jun 20, 2018
+    <meta content="2018-05-03 00:00:00 &#43;0200 CEST" itemprop="datePublished">
+    <time datetime="2018-05-03 00:00:00 &#43;0200 CEST" itemprop="dateModified">
+      May 3, 2018
     </time>
   </span>
   <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
@@ -513,35 +507,35 @@
   <ul class="share">
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions&amp;url=%2ftalk%2fecosta-2018%2f"
+         href="https://twitter.com/intent/tweet?text=Finance%20in%20the%20frequency%20domain&amp;url=%2ftalk%2fdna-spring-2018%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fecosta-2018%2f"
+         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fdna-spring-2018%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-facebook-f"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fecosta-2018%2f&amp;title=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fdna-spring-2018%2f&amp;title=Finance%20in%20the%20frequency%20domain"
          target="_blank" rel="noopener">
         <i class="fab fa-linkedin-in"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fecosta-2018%2f&amp;title=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions"
+         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fdna-spring-2018%2f&amp;title=Finance%20in%20the%20frequency%20domain"
          target="_blank" rel="noopener">
         <i class="fab fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Saddlepoint%20adjusted%20inversion%20of%20characteristic%20functions&amp;body=%2ftalk%2fecosta-2018%2f">
+         href="mailto:?subject=Finance%20in%20the%20frequency%20domain&amp;body=%2ftalk%2fdna-spring-2018%2f">
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -585,7 +579,13 @@
 
 
   
+    
+  
 
+
+<a class="btn btn-outline-primary my-1 mr-1" href="/dna-spring-2018/DNA_BL_03052017.pdf" target="_blank" rel="noopener">
+  PDF
+</a>
 
 
 
@@ -600,7 +600,7 @@
 
 
 
-
+  
 
 
 
@@ -618,7 +618,7 @@
 
     
       <h3>Abstract</h3>
-      <p class="pub-abstract" itemprop="text">For certain types of statistical models, the characteristic function (Fourier transform) is available in closed form, whereas the probability density function has an intractable form, typically as an infinite sum of probability weighted densities. Important such examples include solutions of stochastic differential equations with jumps, the Tweedie model, and Poisson mixture models. We propose a novel and general numerical method for retrieving the probability density function from the characteristic function. Unlike methods based on direct application of quadrature to the inverse Fourier transform, the proposed method allows accurate evaluation of the log-probability density function arbitrarily far out in the tail. Moreover, unlike saddlepoint approximations, the proposed methodology can be made arbitrarily accurate. Owing to these properties, the proposed method is computationally stable and very accurate under log-likelihood optimisation. The method is illustrated for a normal variance-mean mixture, and in an application of maximum likelihood estimation to a jump diffusion model for financial data.</p>
+      <p class="pub-abstract" itemprop="text">The Fourier transform from the time-domain to the frequency-domain is a powerful tool for an abundance of applications. In this lecture, the focus is on that of finance and risk. A brief introduction to the Fourier transform is given, and then an introduction to three motivating examples from my own research: 1. Likelihood estimation of stochastic differential equations with jumps. 2. Aggregating non-life risks and premium principles with KPI-target control. 3. Information efficient data-driven model selection in machine learning.</p>
     
 
     <div class="row">
@@ -628,12 +628,12 @@
           <div class="col-12 col-md-3 pub-row-heading">Date</div>
           <div class="col-12 col-md-9" itemprop="datePublished">
             
-            Jun 20, 2018
+            May 3, 2018
             <div class="talk-time">
               
-                5:08 PM
+                5:18 PM
                 
-                  &mdash; 7:09 PM
+                  &mdash; 7:19 PM
                 
               
             </div>
@@ -650,8 +650,8 @@
         <div class="row">
           <div class="col-12 col-md-3 pub-row-heading">Event</div>
           <div class="col-12 col-md-9">
-            <a href="http://cmstatistics.org/EcoSta2018/index.php" target="_blank" rel="noopener">
-            EcoSta 2018
+            <a href="http://aktfor.no/" target="_blank" rel="noopener">
+            The Norwegian Society of Actuaries annual member meeting
             </a>
           </div>
         </div>
@@ -666,7 +666,7 @@
       <div class="col-md-10">
         <div class="row">
           <div class="col-12 col-md-3 pub-row-heading">Location</div>
-          <div class="col-12 col-md-9">City University, Hong Kong</div>
+          <div class="col-12 col-md-9">Frende Insurance, Bergen, Norway</div>
         </div>
       </div>
       <div class="col-md-1"></div>
@@ -677,7 +677,8 @@
     <div class="space-below"></div>
 
     <div class="article-style">
-      
+      <p>A repository for the presentation can be found at <a href="dna-spring-2018/DNA_BL_03052017.pdf" target="_blank">here</a>.</p>
+
     </div>
 
     
@@ -686,6 +687,8 @@
 <div class="article-tags">
   
   <a class="badge badge-light" href="/tags/computational-statistics/">Computational statistics</a>
+  
+  <a class="badge badge-light" href="/tags/quantitative-finance/">Quantitative finance</a>
   
 </div>
 
