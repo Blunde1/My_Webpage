@@ -4,6 +4,14 @@
     
     <url>
     
+      <loc>/publication/spi/</loc>
+      <lastmod>2018-11-15T00:00:00+01:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/post/the-fear-index-vix-and-variance-swaps/</loc>
       <lastmod>2018-11-12T00:00:00+00:00</lastmod>
     </url>
@@ -52,6 +60,14 @@
     
     <url>
     
+      <loc>/talk/ecosta-2018/</loc>
+      <lastmod>2018-06-20T00:00:00+02:00</lastmod>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>/project/aqualens/aqualens/</loc>
       <lastmod>2018-05-12T00:00:00+02:00</lastmod>
     </url>
@@ -92,33 +108,8 @@
     
     <url>
     
-      <loc>/publication/person-re-id/</loc>
-      <lastmod>2015-09-01T00:00:00+02:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/publication/clothing-search/</loc>
-      <lastmod>2013-07-01T00:00:00+02:00</lastmod>
-    </url>
-    
-  
-    
-    <url>
-    
-      <loc>/publication_types/1/</loc>
-      <lastmod>2013-07-01T00:00:00+02:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    <url>
-    
       <loc>/publication_types/2/</loc>
-      <lastmod>2015-09-01T00:00:00+02:00</lastmod>
+      <lastmod>2018-11-15T00:00:00+01:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -162,7 +153,7 @@
     <url>
     
       <loc>/tags/computational-statistics/</loc>
-      <lastmod>2018-11-12T00:00:00+01:00</lastmod>
+      <lastmod>2018-11-15T00:00:00+01:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -214,7 +205,7 @@
     <url>
     
       <loc>/publication_types/</loc>
-      <lastmod>2013-07-01T00:00:00+02:00</lastmod>
+      <lastmod>2018-11-15T00:00:00+01:00</lastmod>
       <priority>0</priority>
     </url>
     

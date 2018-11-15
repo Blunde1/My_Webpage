@@ -11,6 +11,15 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Saddlepoint adjusted inversion of characteristic functions</title>
+      <link>/publication/spi/</link>
+      <pubDate>Thu, 15 Nov 2018 00:00:00 +0100</pubDate>
+      
+      <guid>/publication/spi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>The fear index, VIX and variance swaps</title>
       <link>/post/the-fear-index-vix-and-variance-swaps/</link>
       <pubDate>Mon, 12 Nov 2018 00:00:00 +0000</pubDate>
@@ -237,6 +246,16 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
     </item>
     
     <item>
+      <title>Saddlepoint adjusted inversion of characteristic functions</title>
+      <link>/talk/ecosta-2018/</link>
+      <pubDate>Wed, 20 Jun 2018 00:00:00 +0200</pubDate>
+      
+      <guid>/talk/ecosta-2018/</guid>
+      <description>&lt;p&gt;A repository for the presentation can be found at &lt;a href=&#34;https://github.com/bergen-ml/2018-10-31-lunde&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>AquaLens</title>
       <link>/project/aqualens/aqualens/</link>
       <pubDate>Sat, 12 May 2018 00:00:00 +0200</pubDate>
@@ -252,26 +271,6 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
       
       <guid>/talk/bergen-ml-meetup-2018-10-31/</guid>
       <description>&lt;p&gt;A repository for the presentation can be found at &lt;a href=&#34;https://github.com/bergen-ml/2018-10-31-lunde&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>A Person Re-Identification System For Mobile Devices</title>
-      <link>/publication/person-re-id/</link>
-      <pubDate>Tue, 01 Sep 2015 00:00:00 +0200</pubDate>
-      
-      <guid>/publication/person-re-id/</guid>
-      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Mobile visual clothing search</title>
-      <link>/publication/clothing-search/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 +0200</pubDate>
-      
-      <guid>/publication/clothing-search/</guid>
-      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
 </description>
     </item>
     
