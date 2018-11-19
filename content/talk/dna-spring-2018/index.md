@@ -48,7 +48,7 @@ tags = ["Computational statistics", "Quantitative finance"]
 slides = "dna-spring-2018/DNA_BL_03052017.pdf"
 
 # Links (optional).
-url_pdf = "dna-spring-2018/DNA_BL_03052017.pdf"
+url_pdf = "" #"dna-spring-2018/DNA_BL_03052017.pdf"
 url_slides = ""
 url_video = ""
 url_code = ""

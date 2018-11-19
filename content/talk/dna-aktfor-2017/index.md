@@ -47,7 +47,7 @@ tags = ["Computational statistics", "Quantitative finance"]
 #slides = "dna-spring-2018"
 
 # Links (optional).
-url_pdf = "dna-spring-2018/DNA_BL_03052017.pdf"
+url_pdf = "http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf"
 url_slides = ""
 url_video = ""
 url_code = ""
