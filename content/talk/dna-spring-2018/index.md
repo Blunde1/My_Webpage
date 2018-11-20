@@ -67,4 +67,3 @@ math = true
   focal_point = "Right"
 +++
 
-A repository for the presentation can be found at [here](dna-spring-2018/DNA_BL_03052017.pdf).
