@@ -293,6 +293,15 @@ K_{var}\approx\frac{2}{T}e^{\mu T}\sum_{i=1}^{n}\frac{\Delta K_i}{K_i^2}Q(K_i)-\
     </item>
     
     <item>
+      <title>Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications</title>
+      <link>/publication/master-thesis/</link>
+      <pubDate>Thu, 02 Jun 2016 00:00:00 +0200</pubDate>
+      
+      <guid>/publication/master-thesis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Information efficient gradient tree boosting</title>
       <link>/slides/mlmeetup/mlmeetup_presentation_bl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
