@@ -15,10 +15,10 @@
   
     
   
-  <meta name="description" content="This lecture considers the problem of likelihood-based parameter estimation for time-homoge- neous jump-diffusion processes. The problem is that there often is no analytic solution to the stochastic differential equations driving the process. Thus, the transition density of the process is unknown. We build on the solution presented in [Preston &amp; Wood 2012], where the transition density of a time-homogeneous diffusion process is approximated by a saddlepoint approximation based on the approximated solution following from discretization schemes, which in turn stems from an Itô-Taylor expansion of the stochastic differential equation. The mathematical tools for understanding the method in [Preston &amp; Wood 2012] and the extended methods to jump-diffusions are developed. We reproduce the results found here, and extend the analysis with maximum likelihood estimation for benchmark processes such as the geometric Brownian motion, the Ornstein-Uhlenbeck process, the Cox-Ingersoll-Ross process, and the Merton model. We also investigate the use of the renormalized saddlepoint approximation in the context of maximum likelihood estimation. The implementation of the methods is carried out with the newly released parallel programming package, Template Model Builder, which uses automatic differentiation among other things. We therefore give an introduction to the basics of automatic differentiation in the context of our computational problems, and also extend the Template Model Builder package to e.g. allow for complex numbers. Thereafter we apply the methods developed in previous chapters to the analysis of stock prices modelled as nonlinear stochastic differential equations, with and without jumps. Finally we briefly analyse some models for stochastic volatility.">
+  <meta name="description" content="At the next Bergen Machine Learning meetup I will lecture on some of my work with gradient boosting algorithms: by coupling information theory, the frequency domain and tree-boosting, the algorithm can adaptively learn the optimal structure of individual trees, and how many trees that should be added; regularization is redundant. This is nice as there are no worries of overfitting, the computational cost is drastically reduced, and it facilitates the democratization of machine learning.">
 
   
-  <link rel="alternate" hreflang="en-us" href="/talk/dna-aktfor-2017/">
+  <link rel="alternate" hreflang="en-us" href="/talk/bergen-ml-meetup-2018-10-31-kopi/">
 
   
 
@@ -88,30 +88,30 @@
   <link rel="icon" type="image/png" href="/img/icon.png">
   <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
 
-  <link rel="canonical" href="/talk/dna-aktfor-2017/">
+  <link rel="canonical" href="/talk/bergen-ml-meetup-2018-10-31-kopi/">
 
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="Berent Å. S. Lunde">
-  <meta property="og:url" content="/talk/dna-aktfor-2017/">
-  <meta property="og:title" content="Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications | Berent Å. S. Lunde">
-  <meta property="og:description" content="This lecture considers the problem of likelihood-based parameter estimation for time-homoge- neous jump-diffusion processes. The problem is that there often is no analytic solution to the stochastic differential equations driving the process. Thus, the transition density of the process is unknown. We build on the solution presented in [Preston &amp; Wood 2012], where the transition density of a time-homogeneous diffusion process is approximated by a saddlepoint approximation based on the approximated solution following from discretization schemes, which in turn stems from an Itô-Taylor expansion of the stochastic differential equation. The mathematical tools for understanding the method in [Preston &amp; Wood 2012] and the extended methods to jump-diffusions are developed. We reproduce the results found here, and extend the analysis with maximum likelihood estimation for benchmark processes such as the geometric Brownian motion, the Ornstein-Uhlenbeck process, the Cox-Ingersoll-Ross process, and the Merton model. We also investigate the use of the renormalized saddlepoint approximation in the context of maximum likelihood estimation. The implementation of the methods is carried out with the newly released parallel programming package, Template Model Builder, which uses automatic differentiation among other things. We therefore give an introduction to the basics of automatic differentiation in the context of our computational problems, and also extend the Template Model Builder package to e.g. allow for complex numbers. Thereafter we apply the methods developed in previous chapters to the analysis of stock prices modelled as nonlinear stochastic differential equations, with and without jumps. Finally we briefly analyse some models for stochastic volatility.">
+  <meta property="og:url" content="/talk/bergen-ml-meetup-2018-10-31-kopi/">
+  <meta property="og:title" content="Information efficient gradient tree boosting | Berent Å. S. Lunde">
+  <meta property="og:description" content="At the next Bergen Machine Learning meetup I will lecture on some of my work with gradient boosting algorithms: by coupling information theory, the frequency domain and tree-boosting, the algorithm can adaptively learn the optimal structure of individual trees, and how many trees that should be added; regularization is redundant. This is nice as there are no worries of overfitting, the computational cost is drastically reduced, and it facilitates the democratization of machine learning.">
   
   
     
   <meta property="og:image" content="/img/Berent_Profile_Picture.jpg">
   <meta property="og:locale" content="en-us">
   
-  <meta property="article:published_time" content="2017-02-16T00:00:00&#43;01:00">
+  <meta property="article:published_time" content="2017-01-01T00:00:00&#43;01:00">
   
-  <meta property="article:modified_time" content="2017-02-16T00:00:00&#43;01:00">
-  
-
+  <meta property="article:modified_time" content="2017-01-01T00:00:00&#43;01:00">
   
 
   
 
-  <title>Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications | Berent Å. S. Lunde</title>
+  
+
+  <title>Information efficient gradient tree boosting | Berent Å. S. Lunde</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#TableOfContents" data-offset="71" >
@@ -297,7 +297,7 @@
 
 
 <div class="article-header d-xl-none">
-  <img src="/talk/dna-aktfor-2017/featured_huea4050798169c9962d3ff6a7fdf6441d_21493_1600x400_fill_q90_box_right.jpg" class="article-banner" itemprop="image" alt="">
+  <img src="/talk/bergen-ml-meetup-2018-10-31-kopi/featured_hued0d892f316e62da8ff45e6f1c28429b_3346081_1600x400_fill_q90_box_right.jpg" class="article-banner" itemprop="image" alt="">
   <span class="article-header-caption">Image credit: <a href="https://unsplash.com/photos/bzdhc5b3Bxs" target="_blank"><strong>Unsplash</strong></a></span>
 </div>
 
@@ -306,7 +306,7 @@
   <div class="row">
     <div class="col-6">
       <div class="split-header-content">
-        <h1 itemprop="name">Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications</h1>
+        <h1 itemprop="name">Information efficient gradient tree boosting</h1>
 
         
 
@@ -319,7 +319,7 @@
   
   <div>
     <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Berent Å. S. Lunde</span>
+      <span itemprop="name">Berent Lunde</span>
     </span>
     
   </div>
@@ -327,9 +327,9 @@
 
   <span class="article-date">
     
-    <meta content="2017-02-16 00:00:00 &#43;0100 CET" itemprop="datePublished">
-    <time datetime="2017-02-16 00:00:00 &#43;0100 CET" itemprop="dateModified">
-      Feb 16, 2017
+    <meta content="2017-01-01 00:00:00 &#43;0100 CET" itemprop="datePublished">
+    <time datetime="2017-01-01 00:00:00 &#43;0100 CET" itemprop="dateModified">
+      Jan 1, 2017
     </time>
   </span>
   <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
@@ -379,19 +379,17 @@
 
 
   
+
+
+
+
+
+
+
+
+  
     
   
-
-
-<a class="btn btn-outline-primary my-1 mr-1" href="http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf" target="_blank" rel="noopener">
-  PDF
-</a>
-
-
-
-
-
-
 
 
 
@@ -412,35 +410,35 @@
   <ul class="share">
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications&amp;url=%2ftalk%2fdna-aktfor-2017%2f"
+         href="https://twitter.com/intent/tweet?text=Information%20efficient%20gradient%20tree%20boosting&amp;url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fdna-aktfor-2017%2f"
+         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-facebook-f"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fdna-aktfor-2017%2f&amp;title=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f&amp;title=Information%20efficient%20gradient%20tree%20boosting"
          target="_blank" rel="noopener">
         <i class="fab fa-linkedin-in"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fdna-aktfor-2017%2f&amp;title=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications"
+         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f&amp;title=Information%20efficient%20gradient%20tree%20boosting"
          target="_blank" rel="noopener">
         <i class="fab fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications&amp;body=%2ftalk%2fdna-aktfor-2017%2f">
+         href="mailto:?subject=Information%20efficient%20gradient%20tree%20boosting&amp;body=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f">
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -452,7 +450,7 @@
     </div>
     <div class="col-6">
       <div class="split-header-image">
-        <img src="/talk/dna-aktfor-2017/featured_huea4050798169c9962d3ff6a7fdf6441d_21493_680x500_fill_q90_box_right.jpg" itemprop="image" alt="">
+        <img src="/talk/bergen-ml-meetup-2018-10-31-kopi/featured_hued0d892f316e62da8ff45e6f1c28429b_3346081_680x500_fill_q90_box_right.jpg" itemprop="image" alt="">
         <span class="article-header-caption">Image credit: <a href="https://unsplash.com/photos/bzdhc5b3Bxs" target="_blank"><strong>Unsplash</strong></a></span>
       </div>
     </div>
@@ -460,7 +458,7 @@
 </div>
 
 <div class="article-container d-xl-none">
-  <h1 itemprop="name">Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications</h1>
+  <h1 itemprop="name">Information efficient gradient tree boosting</h1>
 
   
 
@@ -473,7 +471,7 @@
   
   <div>
     <span itemscope itemprop="author" itemtype="http://schema.org/Person">
-      <span itemprop="name">Berent Å. S. Lunde</span>
+      <span itemprop="name">Berent Lunde</span>
     </span>
     
   </div>
@@ -481,9 +479,9 @@
 
   <span class="article-date">
     
-    <meta content="2017-02-16 00:00:00 &#43;0100 CET" itemprop="datePublished">
-    <time datetime="2017-02-16 00:00:00 &#43;0100 CET" itemprop="dateModified">
-      Feb 16, 2017
+    <meta content="2017-01-01 00:00:00 &#43;0100 CET" itemprop="datePublished">
+    <time datetime="2017-01-01 00:00:00 &#43;0100 CET" itemprop="dateModified">
+      Jan 1, 2017
     </time>
   </span>
   <span itemscope itemprop="publisher" itemtype="http://schema.org/Person">
@@ -503,35 +501,35 @@
   <ul class="share">
     <li>
       <a class="twitter"
-         href="https://twitter.com/intent/tweet?text=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications&amp;url=%2ftalk%2fdna-aktfor-2017%2f"
+         href="https://twitter.com/intent/tweet?text=Information%20efficient%20gradient%20tree%20boosting&amp;url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
       </a>
     </li>
     <li>
       <a class="facebook"
-         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fdna-aktfor-2017%2f"
+         href="https://www.facebook.com/sharer.php?u=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f"
          target="_blank" rel="noopener">
         <i class="fab fa-facebook-f"></i>
       </a>
     </li>
     <li>
       <a class="linkedin"
-         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fdna-aktfor-2017%2f&amp;title=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f&amp;title=Information%20efficient%20gradient%20tree%20boosting"
          target="_blank" rel="noopener">
         <i class="fab fa-linkedin-in"></i>
       </a>
     </li>
     <li>
       <a class="weibo"
-         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fdna-aktfor-2017%2f&amp;title=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications"
+         href="http://service.weibo.com/share/share.php?url=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f&amp;title=Information%20efficient%20gradient%20tree%20boosting"
          target="_blank" rel="noopener">
         <i class="fab fa-weibo"></i>
       </a>
     </li>
     <li>
       <a class="email"
-         href="mailto:?subject=Likelihood%20Estimation%20of%20Jump-Diffusions%3a%20Extensions%20from%20Diffusions%20to%20Jump-Diffusions%2c%20Implementation%20with%20Automatic%20Differentiation%2c%20and%20Applications&amp;body=%2ftalk%2fdna-aktfor-2017%2f">
+         href="mailto:?subject=Information%20efficient%20gradient%20tree%20boosting&amp;body=%2ftalk%2fbergen-ml-meetup-2018-10-31-kopi%2f">
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -575,19 +573,17 @@
 
 
   
+
+
+
+
+
+
+
+
+  
     
   
-
-
-<a class="btn btn-outline-primary my-1 mr-1" href="http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf" target="_blank" rel="noopener">
-  PDF
-</a>
-
-
-
-
-
-
 
 
 
@@ -610,7 +606,7 @@
 
     
       <h3>Abstract</h3>
-      <p class="pub-abstract" itemprop="text">This lecture considers the problem of likelihood-based parameter estimation for time-homoge- neous jump-diffusion processes. The problem is that there often is no analytic solution to the stochastic differential equations driving the process. Thus, the transition density of the process is unknown. We build on the solution presented in [Preston &amp; Wood 2012], where the transition density of a time-homogeneous diffusion process is approximated by a saddlepoint approximation based on the approximated solution following from discretization schemes, which in turn stems from an Itô-Taylor expansion of the stochastic differential equation. The mathematical tools for understanding the method in [Preston &amp; Wood 2012] and the extended methods to jump-diffusions are developed. We reproduce the results found here, and extend the analysis with maximum likelihood estimation for benchmark processes such as the geometric Brownian motion, the Ornstein-Uhlenbeck process, the Cox-Ingersoll-Ross process, and the Merton model. We also investigate the use of the renormalized saddlepoint approximation in the context of maximum likelihood estimation. The implementation of the methods is carried out with the newly released parallel programming package, Template Model Builder, which uses automatic differentiation among other things. We therefore give an introduction to the basics of automatic differentiation in the context of our computational problems, and also extend the Template Model Builder package to e.g. allow for complex numbers. Thereafter we apply the methods developed in previous chapters to the analysis of stock prices modelled as nonlinear stochastic differential equations, with and without jumps. Finally we briefly analyse some models for stochastic volatility.</p>
+      <p class="pub-abstract" itemprop="text">At the next Bergen Machine Learning meetup I will lecture on some of my work with gradient boosting algorithms: by coupling information theory, the frequency domain and tree-boosting, the algorithm can adaptively learn the optimal structure of individual trees, and how many trees that should be added; regularization is redundant. This is nice as there are no worries of overfitting, the computational cost is drastically reduced, and it facilitates the democratization of machine learning.</p>
     
 
     <div class="row">
@@ -620,12 +616,12 @@
           <div class="col-12 col-md-3 pub-row-heading">Date</div>
           <div class="col-12 col-md-9" itemprop="datePublished">
             
-            Feb 16, 2017
+            Oct 31, 2018
             <div class="talk-time">
               
-                5:18 PM
+                5:00 PM
                 
-                  &mdash; 7:19 PM
+                  &mdash; 7:00 PM
                 
               
             </div>
@@ -642,8 +638,8 @@
         <div class="row">
           <div class="col-12 col-md-3 pub-row-heading">Event</div>
           <div class="col-12 col-md-9">
-            <a href="http://aktfor.no/foiler-fra-aktuarfokus-16-02-2017/" target="_blank" rel="noopener">
-            Aktuarfokus
+            <a href="https://www.meetup.com/bergen-machine-learning/events/255094157/" target="_blank" rel="noopener">
+            Bergen Machine Learning meetup
             </a>
           </div>
         </div>
@@ -658,7 +654,7 @@
       <div class="col-md-10">
         <div class="row">
           <div class="col-12 col-md-3 pub-row-heading">Location</div>
-          <div class="col-12 col-md-9">Scandic, Oslo, Norway</div>
+          <div class="col-12 col-md-9">DNB, Bergen, Norway</div>
         </div>
       </div>
       <div class="col-md-1"></div>
@@ -669,7 +665,7 @@
     <div class="space-below"></div>
 
     <div class="article-style">
-      <p>Slides for the presentation can be found at <a href="http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf" target="_blank">here</a>.</p>
+      <p>A repository for the presentation can be found at <a href="https://github.com/bergen-ml/2018-10-31-lunde" target="_blank">here</a>.</p>
 
     </div>
 
@@ -678,9 +674,9 @@
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tags/computational-statistics/">Computational statistics</a>
+  <a class="badge badge-light" href="/tags/boosting/">Boosting</a>
   
-  <a class="badge badge-light" href="/tags/quantitative-finance/">Quantitative finance</a>
+  <a class="badge badge-light" href="/tags/machine-learning/">Machine-Learning</a>
   
 </div>
 
@@ -694,82 +690,6 @@
 
 
 
-
-<div class="media author-card" itemscope itemtype="http://schema.org/Person">
-  
-  <img class="portrait mr-3" src="/img/Berent_Profile_Picture.png" itemprop="image" alt="Avatar">
-  
-  <div class="media-body">
-    <h5 class="card-title" itemprop="name"><a href="/">Berent Å. S. Lunde</a></h5>
-    <h6 class="card-subtitle">PhD Candidate in Statistics</h6>
-    
-    <ul class="network-icon" aria-hidden="true">
-      
-      
-      
-      
-        
-      
-      
-      
-      
-      
-      <li>
-        <a itemprop="sameAs" href="mailto:berent@nql.no" >
-          <i class="fas fa-envelope"></i>
-        </a>
-      </li>
-      
-      
-      
-      
-      
-      
-      
-      
-        
-      
-      <li>
-        <a itemprop="sameAs" href="https://scholar.google.no/citations?user=vwrPnjUAAAAJ&amp;hl=no&amp;oi=sra" target="_blank" rel="noopener">
-          <i class="ai ai-google-scholar"></i>
-        </a>
-      </li>
-      
-      
-      
-      
-        
-      
-      
-      
-      
-      
-        
-      
-      <li>
-        <a itemprop="sameAs" href="https://github.com/Blunde1" target="_blank" rel="noopener">
-          <i class="fab fa-github"></i>
-        </a>
-      </li>
-      
-      
-      
-      
-      
-      
-      
-      
-        
-      
-      <li>
-        <a itemprop="sameAs" href="/files/cv.pdf" >
-          <i class="ai ai-cv"></i>
-        </a>
-      </li>
-      
-    </ul>
-  </div>
-</div>
 
 
 

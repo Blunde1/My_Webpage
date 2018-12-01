@@ -1,12 +1,12 @@
 +++
 title = "Likelihood Estimation of Jump-Diffusions: Extensions from Diffusions to Jump-Diffusions, Implementation with Automatic Differentiation, and Applications"
-date = 2018-05-03T00:00:00  # Schedule page publish date.
+date = 2017-02-16T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2018-05-03T17:18:00
-time_end = 2018-05-03T19:19:00
+time_start = 2017-02-16T17:18:00
+time_end = 2017-02-16T19:19:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["Berent Å. S. Lunde"]
