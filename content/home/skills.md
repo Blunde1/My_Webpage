@@ -6,11 +6,11 @@ date = 2017-09-20T00:00:00
 # Activate this widget? true/false
 active = true
 
-title = "Skills"
+# title = "Skills"
 subtitle = ""
 
 # Order that this section will appear in.
-weight = 7
+weight = 8
 
 # Showcase personal skills or business features.
 # 
