@@ -1,2 +1,2 @@
 # My_Webpage
-Webpage for Berent Lunde using Academic Blogdown
+Webpage for [Berent Lunde](https://berentlunde.netlify.com/) using Academic Blogdown
