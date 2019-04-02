@@ -39,4 +39,8 @@ weight = 8
   name = "Coffee & Code"
   description = "100%"
 
+[design.spacing]
+# customize section spacing, order is top right bottom left
+padding = ["0","0","0","0"]
+
 +++
