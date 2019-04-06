@@ -1,6 +1,6 @@
 ---
-title: "MB and the Saddlepoint Approximation
-author: Berent Lunde
+title: "MB and the Saddlepoint Approximation""
+author: "Berent Lunde"
 date: "2019-04-06"
 slug: TMB-and-the-Saddlepoint-Approximation
 categories:
