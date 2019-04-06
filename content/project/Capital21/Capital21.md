@@ -6,7 +6,7 @@ title = "Capital21"
 date = 2019-04-06T00:00:00
 
 # Project summary to display on homepage.
-summary = "Datasets and figures from the book: "Capital in the Twenty-First Century" by Thomas Piketty."
+summary = "Datasets and figures from the book: Capital in the Twenty-First Century by Thomas Piketty."
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["Economics", "Finance"]`
