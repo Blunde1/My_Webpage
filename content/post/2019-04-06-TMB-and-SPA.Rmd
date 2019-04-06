@@ -1,5 +1,5 @@
 ---
-title: "MB and the Saddlepoint Approximation""
+title: "TMB and the Daddlepoint Approximation"
 author: "Berent Lunde"
 date: "2019-04-06"
 slug: TMB-and-the-Saddlepoint-Approximation
@@ -62,7 +62,7 @@ but can be achieved by applying the Laplace approximation,
 giving the approximation
 $$
 \begin{align*}
-    L^* = \frac{\sqrt{2\pi}^n \exp(-f(\mathbf{\u},\theta))}{\sqrt{\| \nabla_\mathbf{u}^2f(\mathbf{u},\theta) \|}},   
+    L^*(\theta) = \frac{\sqrt{2\pi}^n \exp(-f(\mathbf{\u},\theta))}{\sqrt{\| \nabla_\mathbf{u}^2f(\u,\theta) \|}},   
 \end{align*}
 $$
 where
@@ -81,7 +81,9 @@ $$
     M_\mathbf{Y}(\tau + i\mathbf{s} ; \theta) d\mathbf{s}.
 \end{align*}
 $$
-where $i=\sqrt{-1}$, $\tau\in\mathbb{R}^n$ such that $E(\exp(\tau^T\mathbf{y})) < \infty$ [@butler2007saddlepoint].
+where $i=\sqrt{-1}$,
+$M_\mathbf{Y}(\mathbf{s}) = E(\exp(\mathbf{s}^T\mathbf{y}))$ is the moment generating function (MGF),
+$\tau\in\mathbb{R}^n$ such that $E(\exp(\tau^T\mathbf{y})) < \infty$ [@butler2007saddlepoint].
 
 Applying the Laplace approximation to this integral, we obtain multivaraite saddlepoint approximation: 
 $$
