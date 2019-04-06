@@ -1,16 +1,12 @@
 ---
-title: "TMB and the Daddlepoint Approximation"
-author: "Berent Lunde"
+title: TMB and the Saddlepoint Approximation
+author: Berent Lunde
 date: "2019-04-06"
 slug: TMB-and-the-Saddlepoint-Approximation
 categories:
   - R
 tags:
   - R Markdown
-output:
-  html_document:
-    toc: true
-    toc_depth: 3
 bibliography: Bibliography.bib
 ---
 
