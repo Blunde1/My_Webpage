@@ -1,7 +1,12 @@
 ---
-title: "spaTMB"
+title: "TMB and the Saddlepoint Approximation"
 author: "Berent Lunde"
-date: "6 april 2019"
+date: "2019-04-06"
+slug: TMB-and-the-Saddlepoint-Approximation
+categories:
+  - R
+tags:
+  - R Markdown
 output:
   html_document:
     toc: true
