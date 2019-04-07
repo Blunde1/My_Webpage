@@ -41,8 +41,14 @@ include_source <- function(x,linesToInclud=seq(1:9999)) {
 ```
 
 We seek to employ the framework of the R package Template Model Builder [**TMB**](https://github.com/kaskr/adcomp) [@kristensen2016tmb] which approximately "integrates out" latent variables using the Laplace approximation -- to automatically solve the inner problem of the saddlepoint approximation (SPA) and return the negative logarithm of the SPA.
-The table of contents gives an idea of how the document is laid out.
 And all code can be found [in this Github repository](https://github.com/Blunde1/spaTMB).
+This document has the following layout:
+
+1. Introduction to the Laplace approximation
+2. Introduction to the Saddlepoint approximation
+3. Introduction to **TMB**
+4. Using **TMB** in numerical SPA calculations and parameter optimization
+5. **spaTMB** example
 
 
 ### Introduction to the Laplace approximation
@@ -85,7 +91,7 @@ where $i=\sqrt{-1}$,
 $M_\mathbf{Y}(\mathbf{s}) = E(\exp(\mathbf{s}^T\mathbf{y}))$ is the moment generating function (MGF),
 $\tau\in\mathbb{R}^n$ such that $E(\exp(\tau^T\mathbf{y})) < \infty$ [@butler2007saddlepoint].
 
-Applying the Laplace approximation to this integral, we obtain multivaraite saddlepoint approximation: 
+Applying the Laplace approximation to this integral, we obtain the multivaraite saddlepoint approximation: 
 $$
 \texttt{spa}(f;\mathbf{y}) = 
 \frac{\exp\left(K_\mathbf{y}(\sp;\theta)-\sp^T \mathbf{y}\right)}
@@ -222,6 +228,8 @@ The following table summarizes my findings (conditioned on no special options ev
 Here, we write $l$ for the Laplace approximation and $h$ for the functional form (but unsolved inner problem),
 denote partial derivatives by subscripts, i.e. $H=f_{\mathbf{u}\mathbf{u}}$, 
 and write $\mathbf{\nu}=(\mathbf{u},\theta)$ for the collection of parameters.
+Furthermore, keep in mind that `MakeADFun` returns the orders of `ff` if `random` is non-empty, and those of `f` otherwise.
+E.g. `obj$gr <- ff(order==1)` given random effects.
 
 Function name | Order | Mathemtical expression | Description  
 ----------|-------|-----------------------|----------------------------
@@ -442,7 +450,17 @@ knitr::kable(rbind(summary(rep, "fixed", p.value = TRUE),
   kable_styling(full_width = F)
 ```
 The likelihood estimates are on point! 
-The negative log SPA and its gradient are implemented correctly.
+
+We should also check that the value of the negative log SPA matches that of the negative log normal density for the observations (this is very likely, hinging on the successful parameter optimisation), since the SPA is exact in the normal case.
+Also, if the gradient is zero at the optimum, we can be relatively safe that everything is okay.
+```{r, }
+obj$fn(opt$par)
+-sum(dnorm(y, opt$par[1], exp(opt$par[2]), log=TRUE))
+obj$gr(opt$par)
+```
+The negative log SPA and its gradient are implemented correctly!!
+
+
 Note that **TMB** is extremely fast, and even with 10000 "latent" variables (read: saddlepoints), the computations are done within a second on my computer.
 Finally, for the Gaussian case, we may calculate the saddlepoints explicitly to check that everything matches:
 $$

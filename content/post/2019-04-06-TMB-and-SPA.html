@@ -18,7 +18,14 @@ bibliography: Bibliography.bib
 
 
 <p> </p>
-<p>We seek to employ the framework of the R package Template Model Builder <a href="https://github.com/kaskr/adcomp"><strong>TMB</strong></a> <span class="citation">(Kristensen et al. 2016)</span> which approximately “integrates out” latent variables using the Laplace approximation – to automatically solve the inner problem of the saddlepoint approximation (SPA) and return the negative logarithm of the SPA. The table of contents gives an idea of how the document is laid out. And all code can be found <a href="https://github.com/Blunde1/spaTMB">in this Github repository</a>.</p>
+<p>We seek to employ the framework of the R package Template Model Builder <a href="https://github.com/kaskr/adcomp"><strong>TMB</strong></a> <span class="citation">(Kristensen et al. 2016)</span> which approximately “integrates out” latent variables using the Laplace approximation – to automatically solve the inner problem of the saddlepoint approximation (SPA) and return the negative logarithm of the SPA. And all code can be found <a href="https://github.com/Blunde1/spaTMB">in this Github repository</a>. This document has the following layout:</p>
+<ol style="list-style-type: decimal">
+<li>Introduction to the Laplace approximation</li>
+<li>Introduction to the Saddlepoint approximation</li>
+<li>Introduction to <strong>TMB</strong></li>
+<li>Using <strong>TMB</strong> in numerical SPA calculations and parameter optimization</li>
+<li><strong>spaTMB</strong> example</li>
+</ol>
 <div id="introduction-to-the-laplace-approximation" class="section level3">
 <h3>Introduction to the Laplace approximation</h3>
 <p>We consider the Laplace approximation in the context of likelihood estimation, following (read: stolen from) <span class="citation">(Kristensen et al. 2016)</span> completely: Let <span class="math inline">\(f(\mathbf{u},\theta)\)</span> denote the negative joint log-likelihood of the data and the random effects. This depends on the unknown random effects <span class="math inline">\(\mathbf{u}\in\mathbb{R}^n\)</span> and parameters <span class="math inline">\(\theta\in\mathbb{R}^m\)</span>. The maximum likelihood estimate for θ maximizes <span class="math display">\[
@@ -43,7 +50,7 @@ bibliography: Bibliography.bib
     M_\mathbf{Y}(\tau + i\mathbf{s} ; \theta) d\mathbf{s}.
 \end{align*}
 \]</span> where <span class="math inline">\(i=\sqrt{-1}\)</span>, <span class="math inline">\(M_\mathbf{Y}(\mathbf{s}) = E(\exp(\mathbf{s}^T\mathbf{y}))\)</span> is the moment generating function (MGF), <span class="math inline">\(\tau\in\mathbb{R}^n\)</span> such that <span class="math inline">\(E(\exp(\tau^T\mathbf{y})) &lt; \infty\)</span> <span class="citation">(Butler 2007)</span>.</p>
-<p>Applying the Laplace approximation to this integral, we obtain multivaraite saddlepoint approximation: <span class="math display">\[
+<p>Applying the Laplace approximation to this integral, we obtain the multivaraite saddlepoint approximation: <span class="math display">\[
 \texttt{spa}(f;\mathbf{y}) = 
 \frac{\exp\left(K_\mathbf{y}({\hat{\mathbf{s}}(\theta)};\theta)-{\hat{\mathbf{s}}(\theta)}^T \mathbf{y}\right)}
 {(2\pi)^{(n/2)}\sqrt{\| \nabla_\mathbf{s}^2 K_\mathbf{y}({\hat{\mathbf{s}}(\theta)};\theta) \|}}
@@ -144,7 +151,7 @@ f(\mathbf{u},\theta) = K_\mathbf{y}(\mathbf{\tau} + i\mathbf{s};\theta) - (\math
 <li>Update <code>MakeADFun</code>with a <code>spa=TRUE</code> option, such that SPA calculations are performed instead of Laplace. This would essentially do the same as point three (but be under the hood).</li>
 </ul>
 <p>I have done a hybrid between point 3 and 4; ideally I would like to make a branch on my TMB installation to do point 4, but I am on a Windows machine and hence not blessed with the developer version. If this works, I will still make a pull-request (however, untried) on MakeADFun with a SPA option to adcomp/TMB.</p>
-<p>To update <code>MakeADFun</code> or the <code>obj$env</code>, the <a href="https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R">source code</a> must be studied. The following table summarizes my findings (conditioned on no special options evoked in the <code>MakeADFun</code> call). Here, we write <span class="math inline">\(l\)</span> for the Laplace approximation and <span class="math inline">\(h\)</span> for the functional form (but unsolved inner problem), denote partial derivatives by subscripts, i.e. <span class="math inline">\(H=f_{\mathbf{u}\mathbf{u}}\)</span>, and write <span class="math inline">\(\mathbf{\nu}=(\mathbf{u},\theta)\)</span> for the collection of parameters.</p>
+<p>To update <code>MakeADFun</code> or the <code>obj$env</code>, the <a href="https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R">source code</a> must be studied. The following table summarizes my findings (conditioned on no special options evoked in the <code>MakeADFun</code> call). Here, we write <span class="math inline">\(l\)</span> for the Laplace approximation and <span class="math inline">\(h\)</span> for the functional form (but unsolved inner problem), denote partial derivatives by subscripts, i.e. <span class="math inline">\(H=f_{\mathbf{u}\mathbf{u}}\)</span>, and write <span class="math inline">\(\mathbf{\nu}=(\mathbf{u},\theta)\)</span> for the collection of parameters. Furthermore, keep in mind that <code>MakeADFun</code> returns the orders of <code>ff</code> if <code>random</code> is non-empty, and those of <code>f</code> otherwise. E.g. <code>obj$gr &lt;- ff(order==1)</code> given random effects.</p>
 <table>
 <colgroup>
 <col width="15%" />
@@ -445,7 +452,18 @@ sigma
 </tr>
 </tbody>
 </table>
-<p>The likelihood estimates are on point! The negative log SPA and its gradient are implemented correctly. Note that <strong>TMB</strong> is extremely fast, and even with 10000 “latent” variables (read: saddlepoints), the computations are done within a second on my computer. Finally, for the Gaussian case, we may calculate the saddlepoints explicitly to check that everything matches: <span class="math display">\[
+<p>The likelihood estimates are on point!</p>
+<p>We should also check that the value of the negative log SPA matches that of the negative log normal density for the observations (this is very likely, hinging on the successful parameter optimisation), since the SPA is exact in the normal case. Also, if the gradient is zero at the optimum, we can be relatively safe that everything is okay.</p>
+<pre class="r"><code>obj$fn(opt$par)</code></pre>
+<pre><code>## [1] 18229.89
+## attr(,&quot;logarithm&quot;)
+## [1] TRUE</code></pre>
+<pre class="r"><code>-sum(dnorm(y, opt$par[1], exp(opt$par[2]), log=TRUE))</code></pre>
+<pre><code>## [1] 18229.89</code></pre>
+<pre class="r"><code>obj$gr(opt$par)</code></pre>
+<pre><code>## [1]  0.0002041866 -0.0002949115</code></pre>
+<p>The negative log SPA and its gradient are implemented correctly!!</p>
+<p>Note that <strong>TMB</strong> is extremely fast, and even with 10000 “latent” variables (read: saddlepoints), the computations are done within a second on my computer. Finally, for the Gaussian case, we may calculate the saddlepoints explicitly to check that everything matches: <span class="math display">\[
 \begin{align}
 {\hat{\mathbf{s}}(\theta)}&amp;= \arg\min_s (K_Y(s)-sy) \\
 {\hat{\mathbf{s}}(\theta)}&amp;: K_Y&#39;(s) -x = 0\\
