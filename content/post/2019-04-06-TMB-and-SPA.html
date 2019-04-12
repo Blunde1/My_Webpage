@@ -163,12 +163,12 @@ f(\mathbf{u},\theta) = K_\mathbf{y}(\mathbf{\tau} + i\mathbf{s};\theta) - (\math
 </ol>
 <p>I have done a hybrid between point 3 and 4; ideally I would like to make a branch on my TMB installation to do point 4, but I am on a Windows machine and hence not blessed with the developer version. If this works, I will still make a pull-request (however, untried) on MakeADFun with a SPA option to adcomp/TMB.</p>
 <p>To update <code>MakeADFun</code> or <code>obj$env</code>, the <a href="https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R">source code</a> must be studied. The <strong>TMB</strong> user will be familiar with <code>obj$fn()</code>, <code>obj$gr()</code> and perhaps <code>obj$he()</code>, which, if <code>random</code> is unspecified, correspond to the user supplied objective function, its gradient and Hessian. In this case, this correspond to the function <code>f</code> of orders <span class="math inline">\(0:2\)</span> inside of <code>MakeADFun</code> which it will eventually return when <code>random</code> is unspecified. Otherwise, <code>obj$fn()</code> and <code>obj$gr()</code> will correspond to the Laplace approximation of the user supplied objective function and its gradient. In this case the function <code>ff</code> is calculated internally of <code>MakeADFun</code> and eventually returned. The following table summarizes my findings (conditioned on no special options evoked in the <code>MakeADFun</code> call). Here, we write <span class="math inline">\(l\)</span> for the Laplace approximation and <span class="math inline">\(h\)</span> for the functional form (but unsolved inner problem), denote partial derivatives by subscripts, i.e. <span class="math inline">\(H=f_{\mathbf{u}\mathbf{u}}\)</span>, and write <span class="math inline">\(\mathbf{\nu}=(\mathbf{u},\theta)\)</span> for the collection of parameters. <!-- Furthermore, keep in mind that `MakeADFun` returns the orders of `ff` if `random` is non-empty, and those of `f` otherwise. --> <!-- E.g. `obj$gr <- ff(order==1)` given random effects. --></p>
-<table style="width:96%;">
+<table style="width:100%;">
 <colgroup>
 <col width="9%" />
-<col width="11%" />
-<col width="34%" />
+<col width="10%" />
 <col width="40%" />
+<col width="39%" />
 </colgroup>
 <thead>
 <tr class="header">

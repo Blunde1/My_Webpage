@@ -253,7 +253,7 @@ and write $\mathbf{\nu}=(\mathbf{u},\theta)$ for the collection of parameters.
 <!-- E.g. `obj$gr <- ff(order==1)` given random effects. -->
 
 Name | Order | Mathemtical expression | Description  
-------|-------|------------------------|----------------------------
+------|-------|-----------------------------|----------------------------
 `f` | `order==0` | $f(\mathbf{u},\theta)$ | The user supplied objective
 |    | `order==1` | $f_\mathbf{\nu}(\mathbf{u},\theta)$ | The gradient of user objective
 |    | `order==2` | $f_{\mathbf{\nu} \mathbf{\nu}}(\mathbf{u},\theta)$ | The Hessian matrix of $f$ w.r.t. all parameters
