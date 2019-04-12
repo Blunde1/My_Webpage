@@ -50,6 +50,24 @@ The document has the following layout:
 4. Using **TMB** in numerical SPA calculations and parameter optimization
 5. **spaTMB** example
 
+**Edit 12.04.2019**
+
+A **TMB** fork with SPA functionality installed can be found at [this github repository](https://github.com/Blunde1/adcomp),
+and installed to R via the command 
+`devtools::install_github("Blunde1/adcomp/TMB")`
+
+Usage:
+
+* User supplies the objective function f to *only* be the inner problem of the SPA (renormalization is done automatically).
+* Specify the `SPA` option in `MakeADFun` to `SPA=TRUE` (otherwise, the Laplace approximation is calculated).
+* Specify `random=s` (saddlepoints) for **TMB** to calculate the inner problem.
+
+An example is provided under the name `spa_gauss` in the [examples repository](https://github.com/Blunde1/adcomp/tree/master/tmb_examples).
+
+I have made a pull-request to the official **TMB** repository, but this might of course fall through or take some time.
+
+Small change in and before the inverse subset algorithm table: trying to explain a bit more in detail what `f` and `ff` corresponds to.
+
 
 ### Introduction to the Laplace approximation
 
@@ -197,7 +215,7 @@ However, to solve the inner problem of the SPA, we need to supply the following 
 $$
 \begin{align*}
 f(\mathbf{u},\theta) &= K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y} - n\log (2\pi)\\
-&\sim K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y},
+&\approx K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y},
 \end{align*}
 $$
 where $\mathbf{s}$ is set to `random` (and hence, will be integrated out by **TMB**).
@@ -215,21 +233,24 @@ where the imaginary unit, $i$, reverses the sign of the Hessian (w.r.t $\mathbf{
 
 There are at least four possible solutions:
 
-- Use the `autodiff` namespace to construct structs of $K$ and the inner problem, and a Newton type algorithm to solve it. This is not ideal, because all Newton iterations will be taped by **TMB**, while only the last two should be sufficient for derivatives w.r.t. $\theta$. See [this code for an example](https://github.com/Blunde1/HyperSDE/blob/master/HyperSDE/src/HyperSDE.cpp).
-- Use `ADREPORT` on the quantities needed to build the negative $\log \texttt{spa}$ and its gradient
-- Use the quantities in `obj$env` to build new `obj$fn` and `obj$gr`.
-- Update `MakeADFun`with a `spa=TRUE` option, such that SPA calculations are performed instead of Laplace. This would essentially do the same as point three (but be under the hood).
+1. Use the `autodiff` namespace to construct structs of $K$ and the inner problem, and a Newton type algorithm to solve it. This is not ideal, because all Newton iterations will be taped by **TMB**, while only the last two should be sufficient for derivatives w.r.t. $\theta$. See [this code for an example](https://github.com/Blunde1/HyperSDE/blob/master/HyperSDE/src/HyperSDE.cpp).
+2. Use `ADREPORT` on the quantities needed to build the negative $\log \texttt{spa}$ and its gradient
+3. Use the quantities in `obj$env` to build new `obj$fn` and `obj$gr`.
+4. Update `MakeADFun`with a `spa=TRUE` option, such that SPA calculations are performed instead of Laplace. This would essentially do the same as point three (but be under the hood).
 
 I have done a hybrid between point 3 and 4; ideally I would like to make a branch on my TMB installation to do point 4, but I am on a Windows machine and hence not blessed with the developer version.
 If this works, I will still make a pull-request (however, untried) on MakeADFun with a SPA option to adcomp/TMB.
 
-To update `MakeADFun` or the `obj$env`, the [source code](https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R) must be studied.
+To update `MakeADFun` or `obj$env`, the [source code](https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R) must be studied.
+The **TMB** user will be familiar with `obj$fn()`, `obj$gr()` and perhaps `obj$he()`, which, if `random` is unspecified, correspond to the user supplied objective function, its gradient and Hessian. 
+In this case, this correspond to the function `f` of orders $0:2$ inside of `MakeADFun` which it will eventually return when `random` is unspecified.
+Otherwise, `obj$fn()` and `obj$gr()` will correspond to the Laplace approximation of the user supplied objective function and its gradient. In this case the function `ff` is calculated internally of `MakeADFun` and eventually returned.
 The following table summarizes my findings (conditioned on no special options evoked in the `MakeADFun` call).
 Here, we write $l$ for the Laplace approximation and $h$ for the functional form (but unsolved inner problem),
 denote partial derivatives by subscripts, i.e. $H=f_{\mathbf{u}\mathbf{u}}$, 
 and write $\mathbf{\nu}=(\mathbf{u},\theta)$ for the collection of parameters.
-Furthermore, keep in mind that `MakeADFun` returns the orders of `ff` if `random` is non-empty, and those of `f` otherwise.
-E.g. `obj$gr <- ff(order==1)` given random effects.
+<!-- Furthermore, keep in mind that `MakeADFun` returns the orders of `ff` if `random` is non-empty, and those of `f` otherwise. -->
+<!-- E.g. `obj$gr <- ff(order==1)` given random effects. -->
 
 Function name | Order | Mathemtical expression | Description  
 ----------|-------|-----------------------|----------------------------
@@ -238,8 +259,8 @@ Function name | Order | Mathemtical expression | Description
 |    | `order==2` | $f_{\mathbf{\nu} \mathbf{\nu}}(\mathbf{u},\theta)$ | The Hessian matrix of $f$ w.r.t. all parameters
 `h` | `order==0` | $h(\mathbf{u},\theta)=f(\mathbf{u},\theta) + \frac{1}{2}\log\| f_{\mathbf{u}\mathbf{u}}(\mathbf{u},\theta) \| - \frac{n}{2}\log(2\pi)$ | The Laplace objective
 |   |   `order==1` | $h_\nu(\mathbf{u},\theta)=f_\mathbf{\nu}(\mathbf{u},\theta) + \frac{1}{2}\nabla_\nu \log\|f_{\mathbf{u}\mathbf{u}}(u,\theta) \|$ | The derivative of the Laplace objective w.r.t. all parameters
-`ff`|   `order==0` | $l(\u,\theta)=h(\u,\theta);~ \u=\arg\min_\mathbf{u} f(\mathbf{u},\theta)$ | `h(order=0)` at $\mathbf{u}=\u$ |
-|   |   `order==1` | $\begin{align}l_\theta(\u,\theta) &= h_\theta(\u,\theta)\\ &-h_\mathbf{u}(\u,\theta)f_{\mathbf{u}\mathbf{u}}(\u,\theta)^{-1} f_{\mathbf{u}\theta}(\u,\theta)\end{align}$ | Gradient of the Laplace approximation w.r.t. $\theta$
+`ff`|   `order==0` | $l(\theta)=h(\u,\theta);~ \u=\arg\min_\mathbf{u} f(\mathbf{u},\theta)$ | `h(order=0)` at $\mathbf{u}=\u$ |
+|   |   `order==1` | $\begin{align}l_\theta(\theta) &= h_\theta(\u,\theta)\\ &-h_\mathbf{u}(\u,\theta)f_{\mathbf{u}\mathbf{u}}(\u,\theta)^{-1} f_{\mathbf{u}\theta}(\u,\theta)\end{align}$ | Gradient of the Laplace approximation w.r.t. $\theta$
 
 <details> <summary> A side note </summary>
 The expression $\nabla_\nu \log\|f_{\mathbf{u}\mathbf{u}}(u,\theta) \|$ in $`h(order==1)` is difficult and deserve special attention.

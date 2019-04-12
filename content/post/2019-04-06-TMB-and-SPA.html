@@ -26,6 +26,17 @@ bibliography: Bibliography.bib
 <li>Using <strong>TMB</strong> in numerical SPA calculations and parameter optimization</li>
 <li><strong>spaTMB</strong> example</li>
 </ol>
+<p><strong>Edit 12.04.2019</strong></p>
+<p>A <strong>TMB</strong> fork with SPA functionality installed can be found at <a href="https://github.com/Blunde1/adcomp">this github repository</a>, and installed to R via the command <code>devtools::install_github(&quot;Blunde1/adcomp/TMB&quot;)</code></p>
+<p>Usage:</p>
+<ul>
+<li>User supplies the objective function f to <em>only</em> be the inner problem of the SPA (renormalization is done automatically).</li>
+<li>Specify the <code>SPA</code> option in <code>MakeADFun</code> to <code>SPA=TRUE</code> (otherwise, the Laplace approximation is calculated).</li>
+<li>Specify <code>random=s</code> (saddlepoints) for <strong>TMB</strong> to calculate the inner problem.</li>
+</ul>
+<p>An example is provided under the name <code>spa_gauss</code> in the <a href="https://github.com/Blunde1/adcomp/tree/master/tmb_examples">examples repository</a>.</p>
+<p>I have made a pull-request to the official <strong>TMB</strong> repository, but this might of course fall through or take some time.</p>
+<p>Small change in and before the inverse subset algorithm table: trying to explain a bit more in detail what <code>f</code> and <code>ff</code> corresponds to.</p>
 <div id="introduction-to-the-laplace-approximation" class="section level3">
 <h3>Introduction to the Laplace approximation</h3>
 <p>We consider the Laplace approximation in the context of likelihood estimation, following (read: stolen from) <span class="citation">(Kristensen et al. 2016)</span> completely: Let <span class="math inline">\(f(\mathbf{u},\theta)\)</span> denote the negative joint log-likelihood of the data and the random effects. This depends on the unknown random effects <span class="math inline">\(\mathbf{u}\in\mathbb{R}^n\)</span> and parameters <span class="math inline">\(\theta\in\mathbb{R}^m\)</span>. The maximum likelihood estimate for θ maximizes <span class="math display">\[
@@ -136,7 +147,7 @@ Type objective_function&lt;Type&gt;::operator() ()
 \]</span> However, to solve the inner problem of the SPA, we need to supply the following objective: <span class="math display">\[
 \begin{align*}
 f(\mathbf{u},\theta) &amp;= K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y} - n\log (2\pi)\\
-&amp;\sim K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y},
+&amp;\approx K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathbf{y},
 \end{align*}
 \]</span> where <span class="math inline">\(\mathbf{s}\)</span> is set to <code>random</code> (and hence, will be integrated out by <strong>TMB</strong>). However, <strong>TMB</strong> would then return <span class="math display">\[
 - \log L^*(\theta) = -\log \texttt{spa}(f,\mathbf{y}) + 2 \left(K_\mathbf{y}({\hat{\mathbf{s}}(\theta)};\theta)-{\hat{\mathbf{s}}(\theta)}^T \mathbf{y}\right).
@@ -144,14 +155,14 @@ f(\mathbf{u},\theta) &amp;= K_\mathbf{y}(\mathbf{s};\theta) - \mathbf{s}^T\mathb
 f(\mathbf{u},\theta) = K_\mathbf{y}(\mathbf{\tau} + i\mathbf{s};\theta) - (\mathbf{\tau} + i\mathbf{s})^T\mathbf{y} - n\log (2\pi),
 \]</span> where the imaginary unit, <span class="math inline">\(i\)</span>, reverses the sign of the Hessian (w.r.t <span class="math inline">\(\mathbf{\tau}\)</span>), replacing minimization with maximization in the the inner optimization and vice versa. <strong>TMB</strong> does not directly allow complex AD data types (while still possible inside TMB, see e.g. <a href="https://github.com/Blunde1/it-ift/blob/master/implementation/includes/complex.hpp">this file on Github</a> and example use (advanced SPA calculations) in corresponding repository).</p>
 <p>There are at least four possible solutions:</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>Use the <code>autodiff</code> namespace to construct structs of <span class="math inline">\(K\)</span> and the inner problem, and a Newton type algorithm to solve it. This is not ideal, because all Newton iterations will be taped by <strong>TMB</strong>, while only the last two should be sufficient for derivatives w.r.t. <span class="math inline">\(\theta\)</span>. See <a href="https://github.com/Blunde1/HyperSDE/blob/master/HyperSDE/src/HyperSDE.cpp">this code for an example</a>.</li>
 <li>Use <code>ADREPORT</code> on the quantities needed to build the negative <span class="math inline">\(\log \texttt{spa}\)</span> and its gradient</li>
 <li>Use the quantities in <code>obj$env</code> to build new <code>obj$fn</code> and <code>obj$gr</code>.</li>
 <li>Update <code>MakeADFun</code>with a <code>spa=TRUE</code> option, such that SPA calculations are performed instead of Laplace. This would essentially do the same as point three (but be under the hood).</li>
-</ul>
+</ol>
 <p>I have done a hybrid between point 3 and 4; ideally I would like to make a branch on my TMB installation to do point 4, but I am on a Windows machine and hence not blessed with the developer version. If this works, I will still make a pull-request (however, untried) on MakeADFun with a SPA option to adcomp/TMB.</p>
-<p>To update <code>MakeADFun</code> or the <code>obj$env</code>, the <a href="https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R">source code</a> must be studied. The following table summarizes my findings (conditioned on no special options evoked in the <code>MakeADFun</code> call). Here, we write <span class="math inline">\(l\)</span> for the Laplace approximation and <span class="math inline">\(h\)</span> for the functional form (but unsolved inner problem), denote partial derivatives by subscripts, i.e. <span class="math inline">\(H=f_{\mathbf{u}\mathbf{u}}\)</span>, and write <span class="math inline">\(\mathbf{\nu}=(\mathbf{u},\theta)\)</span> for the collection of parameters. Furthermore, keep in mind that <code>MakeADFun</code> returns the orders of <code>ff</code> if <code>random</code> is non-empty, and those of <code>f</code> otherwise. E.g. <code>obj$gr &lt;- ff(order==1)</code> given random effects.</p>
+<p>To update <code>MakeADFun</code> or <code>obj$env</code>, the <a href="https://github.com/kaskr/adcomp/blob/master/TMB/R/TMB.R">source code</a> must be studied. The <strong>TMB</strong> user will be familiar with <code>obj$fn()</code>, <code>obj$gr()</code> and perhaps <code>obj$he()</code>, which, if <code>random</code> is unspecified, correspond to the user supplied objective function, its gradient and Hessian. In this case, this correspond to the function <code>f</code> of orders <span class="math inline">\(0:2\)</span> inside of <code>MakeADFun</code> which it will eventually return when <code>random</code> is unspecified. Otherwise, <code>obj$fn()</code> and <code>obj$gr()</code> will correspond to the Laplace approximation of the user supplied objective function and its gradient. In this case the function <code>ff</code> is calculated internally of <code>MakeADFun</code> and eventually returned. The following table summarizes my findings (conditioned on no special options evoked in the <code>MakeADFun</code> call). Here, we write <span class="math inline">\(l\)</span> for the Laplace approximation and <span class="math inline">\(h\)</span> for the functional form (but unsolved inner problem), denote partial derivatives by subscripts, i.e. <span class="math inline">\(H=f_{\mathbf{u}\mathbf{u}}\)</span>, and write <span class="math inline">\(\mathbf{\nu}=(\mathbf{u},\theta)\)</span> for the collection of parameters. <!-- Furthermore, keep in mind that `MakeADFun` returns the orders of `ff` if `random` is non-empty, and those of `f` otherwise. --> <!-- E.g. `obj$gr <- ff(order==1)` given random effects. --></p>
 <table>
 <colgroup>
 <col width="15%" />
@@ -201,13 +212,13 @@ f(\mathbf{u},\theta) = K_\mathbf{y}(\mathbf{\tau} + i\mathbf{s};\theta) - (\math
 <tr class="even">
 <td><code>ff</code></td>
 <td><code>order==0</code></td>
-<td><span class="math inline">\(l({\hat{\mathbf{u}}(\theta)},\theta)=h({\hat{\mathbf{u}}(\theta)},\theta);~ {\hat{\mathbf{u}}(\theta)}=\arg\min_\mathbf{u} f(\mathbf{u},\theta)\)</span></td>
+<td><span class="math inline">\(l(\theta)=h({\hat{\mathbf{u}}(\theta)},\theta);~ {\hat{\mathbf{u}}(\theta)}=\arg\min_\mathbf{u} f(\mathbf{u},\theta)\)</span></td>
 <td><code>h(order=0)</code> at <span class="math inline">\(\mathbf{u}={\hat{\mathbf{u}}(\theta)}\)</span></td>
 </tr>
 <tr class="odd">
 <td></td>
 <td><code>order==1</code></td>
-<td><span class="math inline">\(\begin{align}l_\theta({\hat{\mathbf{u}}(\theta)},\theta) &amp;= h_\theta({\hat{\mathbf{u}}(\theta)},\theta)\\ &amp;-h_\mathbf{u}({\hat{\mathbf{u}}(\theta)},\theta)f_{\mathbf{u}\mathbf{u}}({\hat{\mathbf{u}}(\theta)},\theta)^{-1} f_{\mathbf{u}\theta}({\hat{\mathbf{u}}(\theta)},\theta)\end{align}\)</span></td>
+<td><span class="math inline">\(\begin{align}l_\theta(\theta) &amp;= h_\theta({\hat{\mathbf{u}}(\theta)},\theta)\\ &amp;-h_\mathbf{u}({\hat{\mathbf{u}}(\theta)},\theta)f_{\mathbf{u}\mathbf{u}}({\hat{\mathbf{u}}(\theta)},\theta)^{-1} f_{\mathbf{u}\theta}({\hat{\mathbf{u}}(\theta)},\theta)\end{align}\)</span></td>
 <td>Gradient of the Laplace approximation w.r.t. <span class="math inline">\(\theta\)</span></td>
 </tr>
 </tbody>
