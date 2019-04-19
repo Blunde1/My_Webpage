@@ -1,0 +1,137 @@
+---
+title: "The Modified Bessel function of the first kind and Automatic Differentiation"
+author: "Berent Lunde"
+date: "2019-04-19"
+output: html_document
+categories:
+  - R
+  - C++
+tags:
+  - TMB
+  - Bessel
+  - AD
+---
+
+
+
+I was intending to write a longer blog-post about my favourite dataset of all time: the internet surf-times of a previous co-worker (and dear I say, friend? :) ). However, this will have to be delayed to another post, because in running some old <strong>TMB</strong> code, all optimisations collapsed. The old codes were built on a Linux computer around two years ago, so I first thought it was due to some difference in the operating systems, or that <strong>TMB</strong> had changed. However, on inspection the root cause was discovered: In building the likelihood, I needed the <a href="http://mathworld.wolfram.com/ModifiedBesselFunctionoftheFirstKind.html">modified Bessel function of the first kind</a>
+<span class="math display">\[\begin{align}
+    I_\nu(x) = \sum_{m=0}^\infty \frac{1}{m!\Gamma(m+\nu+1)}\left( \frac{x}{2} \right)^{2m+\nu}.
+\end{align}\]</span>
+<p>This is now implemented in <strong>TMB</strong>, but at the time of writing my programs, it was not, and I therefore had to create my own implementation.</p>
+<p>For my purposes of integrating out a latent process (using the Laplace approximation), the derivative with respecto to both <span class="math inline">\(x\)</span> and <span class="math inline">\(\nu\)</span> are needed for the inner problem. However, while my own old implementation of the Bessel function had a way of doing this, the current standard <strong>TMB</strong> package only allows differentiation with respect to <span class="math inline">\(x\)</span> but not <span class="math inline">\(\nu\)</span>. As the new implementation has the same name <code>besselI(Type x, Type nu)</code> as my old implementation, the compiler did not complain, but the Laplace approximation was completely off.</p>
+So why are the derivatives not implemented in <strong>TMB</strong>, and how did I do it? The reasons can be found by checking the derivative expressions in at the following <a href="http://functions.wolfram.com/Bessel-TypeFunctions/BesselI/20/ShowAll.html">wolfram page</a>; The first derivative is easily computed, using the relation
+<span class="math display">\[\begin{align}
+    \frac{\partial}{\partial x} I_\nu (x) = \frac{\nu}{x} I_{\nu}(x) + I_{\nu+1}(x)
+\end{align}\]</span>
+<p>or any of the other relations using the original function itself. The problem lies in the second parameter, <span class="math inline">\(\nu\)</span>, for which there is no closed form expression, which is also the reason why it is not implemented in the standard <strong>TMB</strong>.</p>
+<p>To my implementation: One of the great things about <strong>TMB</strong> is how it employs the fact that R is running in the background, and that R is also written in C: the function values can be drawn from R (using the <span class="math inline">\(\texttt{Rmath}\)</span> library) since <span class="math inline">\(I_\nu(x)\)</span> is already implemented in R as <code>besselI()</code>. The partial derivatives of the function must then be implemented manually. To do this, create the following code in the <span class="math inline">\(\texttt{&quot;atomic_math.hpp&quot;}\)</span> in the <span class="math inline">\(\texttt{&quot;include&quot;}\)</span> folder of the TMB package. For the difficult derivative, note that a finite difference approximation of the derivative with respect to <span class="math inline">\(\nu\)</span> was used, due to the complicated expression of this term. This goes against the exactness of AD, but was tested and found to work well in practice.</p>
+<pre class="cpp"><code>/** \brief Atomic version of \f$besselI(x,\nu)\f$.
+    Valid parameter range: \f$x =(x,\nu) \in \mathbb{R}_+\times\mathbb{R}\f$.
+    \note Derivative wrt. \f$\nu\f$ is now implemented approximately.
+    \param x Input vector of length 2.
+    \return Vector of length 1.
+*/
+TMB_ATOMIC_VECTOR_FUNCTION(
+            // ATOMIC_NAME
+            besselI2
+            ,
+            // OUTPUT_DIM
+            1
+            ,
+            // ATOMIC_DOUBLE
+            ty[0] = Rmath::Rf_bessel_i(tx[0], tx[1], 1.0 /* Not scaled */ );
+            ,
+            // ATOMIC REVERSE
+            Type value = ty[0];
+            Type x = tx[0];
+            Type nu = tx[1];
+            CppAD::vector&lt;Type&gt; arg(2);
+            arg[0] = x;
+            arg[1] = nu + Type(1);
+            px[0] = ( besselI2(arg)[0] + value * (nu / x) )* py[0]; // With respect to x
+            arg[1] = nu + Type(0.00001);
+            px[1] = ( ( besselI2(arg)[0] - besselI2(tx)[0] ) / Type(0.00001) )* py[0]; // With respect to nu, approximated
+            )</code></pre>
+<p>Then, to make everything user friendly, add the following code snippet in <span class="math inline">\(\texttt{&quot;convenience.hpp&quot;}\)</span> of the same folder.</p>
+<pre class="cpp"><code>/**
+ * Modified bessel function of the first kind.
+ * Differentiation is allowed with respect to both parameters, x and nu.
+ */
+
+template&lt;class Type&gt;
+Type besselI2(Type x, Type nu){
+  CppAD::vector&lt;Type&gt; tx(2);
+  tx[0] = x;
+  tx[1] = nu;
+  return atomic::besselI2(tx)[0];
+}</code></pre>
+<p>Note the naming convention <code>besselI2</code>, as we do not want it to conflict with the current implementation (without a derivative).</p>
+<p>I have implemented <code>besselI2</code> in the same fork as I did for the <a href="https://berentlunde.netlify.com/post/tmb-and-the-saddlepoint-approximation/">SPA option</a>: <a href="https://github.com/Blunde1/adcomp" class="uri">https://github.com/Blunde1/adcomp</a>.</p>
+The Bessel occur for many common densities, and its a good thing to be able to use without thinking about it. One such example is the <a href="https://en.wikipedia.org/wiki/Noncentral_chi-squared_distribution">Noncentral chi-squared distribution</a>. The density is given as
+<span class="math display">\[\begin{align}
+    f(x;k,\lambda) = \frac{1}{2}e^{-(x+\lambda)} \left( \frac{x}{\lambda} \right)^{k/4-1/2} I_{k/2-1}(\sqrt{\lambda x}).
+\end{align}\]</span>
+<p>Using the modified <strong>TMB</strong> version, we can build the likelihood for Noncentral chi-squared observations as so:</p>
+<pre class="cpp"><code>#include &lt;TMB.hpp&gt;
+template &lt;class Type&gt;
+Type objective_function&lt;Type&gt;::operator() ()
+{
+    DATA_VECTOR(x);
+    PARAMETER(k);
+    PARAMETER(lambda);
+    
+    Type jnll, dnchi, u;
+    jnll = dnchi = 0;
+    u = k / 2 - 1;
+    for (int i = 0; i &lt; x.size(); i++) {
+        dnchi = 0.5*exp(-(x[i] + lambda) / 2) * pow(Type(x[i] / lambda), Type(u / 2)) *besselI2(sqrt(lambda*x[i]), u);
+        jnll -= log(dnchi);
+        dnchi = 0;
+    }
+    return jnll;
+}</code></pre>
+<p>And on the R side:</p>
+<pre class="r"><code># Compile c++ code and load into R
+library(TMB)
+compile(&quot;dbessel_I_nchisq.cpp&quot;)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>dyn.load(dynlib(&quot;dbessel_I_nchisq&quot;))
+
+n &lt;- 1000
+df = 3
+ncp = 3.5
+data&lt;-rchisq(n, df, ncp)
+
+obj&lt;-MakeADFun(data=list(x=data),parameters=list(k=1,lambda=1), silent = T)
+opt&lt;-nlminb(obj$par,obj$fn,obj$gr,obj$he)
+rep&lt;-sdreport(obj)
+knitr::kable(summary(rep, p.value = TRUE))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">z value</th>
+<th align="right">Pr(&gt;|z^2|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>k</td>
+<td align="right">2.732397</td>
+<td align="right">0.2905179</td>
+<td align="right">9.405262</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>lambda</td>
+<td align="right">4.073920</td>
+<td align="right">0.3467622</td>
+<td align="right">11.748456</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>I will try to make my next post about my favourite co-worker dataset – very much looking forward to that!</p>
