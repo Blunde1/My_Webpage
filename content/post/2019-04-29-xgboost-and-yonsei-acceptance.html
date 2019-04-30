@@ -863,6 +863,7 @@ NA
 </table>
 </div>
 <p><br></p>
+<p>Note also the column <code>applied mileage</code>. This is the amount of “credits” the student has “bet” on any given course. Betting mileage will contribute towards a higher ranking, and subsequent acceptance to the course. However, each student has only a finite amount of mileage to apply, and it is therefore a scarce resource that must be distributed among the desired courses with care.</p>
 <p>Now, what is our response variable <span class="math inline">\(y\)</span>? It is intriguing to take the <code>rank</code> column, and then use <code>Prescribed Seats</code> to check if the predicted rank is high enough for acceptance. I will use this approach for a later post, where I’ll try to beat whatever result is achieved in this post, where I will be using the <code>Accepted/unaccepted</code> column directly as our target variable. This then becomes a binary classification problem. As such, the <strong>log loss</strong> function <span class="math inline">\(l\)</span> is a natural measure. It is defined by the following: <span class="math display">\[
 l(y,\hat{p}) = - y \log(\hat{p}) - (1-y)\log(1-\hat{p})
 \]</span> i.e. the negative log-likelihood for a Bernoulli random variable. We implement it in R in the following way:</p>
