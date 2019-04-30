@@ -1,0 +1,1046 @@
+---
+title: XGBoost and Yonsei Acceptance
+author: Berent Lunde
+date: '2019-04-30'
+slug: xgboost-and-yonsei-acceptance
+categories:
+  - R
+  - Boosting
+image:
+  caption: ''
+  focal_point: ''
+tags:
+  - R
+  - XGBoost
+  - tidyverse
+  - Yonsei acceptance
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    #theme: cosmo
+    highlight: tango
+    #code_folding : show
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<div id="student-acceptance" class="section level3">
+<h3>Student acceptance</h3>
+<p>Lately I got to play with some very interesting data, relating to student acceptance (and ranking) into applied courses from Yonsei university in Korea. Yonsei university is one of the three famous SKY universities in Korea (Seoul National University, Korea University and Yonsei university) where life is super competetive in almost every way. It is therefore very interesting to see what drives acceptance, and what can students do to improve their chances?</p>
+<p>On a different note, I’ve been wanting to write a post on gradient tree boosting, which just so happens to be state of the art machine learning for this type of data and problem. I will therefore use some space designated to this purpose as well.</p>
+<ul>
+<li><strong>Note:</strong> Some code-blocks have been hidden. Click their names to unfold them.</li>
+</ul>
+</div>
+<div id="introduction-to-the-data-and-preparations" class="section level3">
+<h3>Introduction to the data and preparations</h3>
+<p><details open> <summary> Loading libraries </summary></p>
+<pre class="r"><code>library(readxl) # excel data
+library(kableExtra) # table styling
+library(xgboost) # model algo
+library(tidyverse) # data science
+require(Matrix) # sparsity
+library(grid) # Visualizations - grid for ggplot
+library(gridExtra) # Visualizations - grid for ggplot</code></pre>
+<p></details></p>
+<p><details> <summary> Loading data </summary></p>
+<pre class="r"><code>yonsei &lt;- as.data.frame(read_excel(&quot;yonsei-acceptance/yonsei-acceptance.xlsx&quot;))
+yonsei_translation &lt;- read_excel(&quot;yonsei-acceptance/yonsei-translation.xlsx&quot;)
+names(yonsei) &lt;- names(yonsei_translation)
+rm(yonsei_translation); invisible(gc())</code></pre>
+<p></details></p>
+<!-- <details> <summary> Multiplot function </summary> -->
+<!-- </details> -->
+<p>The data has 6520 rows and 37 columns. As the observant reader will notice, some of the fields are written in Hangul, the (very elegant) alphabet of Korea. This does however, not pose a problem, as the natural data type for these columns is as <code>factor</code>, which can be inferred from the column names.</p>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:95%; ">
+<table class="table table-striped" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; position: sticky; top:0; background-color: #FFFFFF;" colspan="6">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+The Yonsei Acceptance Data (head)
+</div>
+</th>
+<th style="border-bottom:hiddenposition: sticky; top:0; background-color: #FFFFFF;" colspan="31">
+</th>
+</tr>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Cource ID
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Class Division
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Training Class Division
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Course name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Name of Prof.
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Lecture time
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Opened Faculty
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats for Major student
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Including Double Major student
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Useage of Prescribed Seats for each year
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats for freshman
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats for 2nd year
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats for 3rd year
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Prescribed Seats for 4th year
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Faculty of 1st major
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Faculty of 2nd major
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+transfer (university)
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+accepted credits before transfer
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+transfer of bachelor
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Graduation Postponement
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Exchange student
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Calculated Credets
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Special education receipient
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+whether major Student or not
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+whether can be accepted as major student
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Grade (year)
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+maximum mileage
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+applied mileage
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+number of applied courses in this semester
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+whether applied for graduation after this semester
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+whether this is 1st trial or retaking a course
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+total credit of taken courses/total credits for graduation
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+total credits of last semester/maximum credits can be applied in last semster
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+rank
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Accepted/unaccepted
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Whether taken Before or not
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+정치외교학과
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+신학과
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0.8888
+</td>
+<td style="text-align:right;">
+0.3684
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+철학
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.7629
+</td>
+<td style="text-align:right;">
+0.7894
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+식품영양
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.5793
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+신학과
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.5555
+</td>
+<td style="text-align:right;">
+1.0000
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BIZ1101
+</td>
+<td style="text-align:left;">
+01
+</td>
+<td style="text-align:left;">
+00
+</td>
+<td style="text-align:left;">
+회계원리(1)
+</td>
+<td style="text-align:left;">
+주인기
+</td>
+<td style="text-align:left;">
+월7,8,9
+</td>
+<td style="text-align:left;">
+경영대학 경영학전공
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+경영학과
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:right;">
+0.5515
+</td>
+<td style="text-align:right;">
+0.3611
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+O
+</td>
+<td style="text-align:left;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<p>Now, what is our response variable <span class="math inline">\(y\)</span>? It is intriguing to take the <code>rank</code> column, and then use <code>Prescribed Seats</code> to check if the predicted rank is high enough for acceptance. I will use this approach for a later post, where I’ll try to beat whatever result is achieved in this post, where I will be using the <code>Accepted/unaccepted</code> column directly as our target variable. This then becomes a binary classification problem. As such, the <strong>log loss</strong> function <span class="math inline">\(l\)</span> is a natural measure. It is defined by the following: <span class="math display">\[
+l(y,\hat{p}) = - y \log(\hat{p}) - (1-y)\log(1-\hat{p})
+\]</span> i.e. the negative log-likelihood for a Bernoulli random variable. We implement it in R in the following way:</p>
+<p><details open> <summary> Log loss implementation </summary></p>
+<pre class="r"><code>loss &lt;- function(actual, predicted, eps = 1e-15) {
+    predicted = pmin(pmax(predicted, eps), 1-eps)
+    - (sum(actual * log(predicted) + (1 - actual) * log(1 - predicted))) / length(actual)
+}</code></pre>
+<p></details></p>
+</div>
+<div id="gradient-tree-boosting" class="section level3">
+<h3>Gradient tree boosting</h3>
+<p>For this type of structured data, there is an algorithm that, for the last firve years or so, has dominated in machine learning competitions. I am of course talking about gradient tree boosting, which I believe rose to fame via the <a href="https://github.com/dmlc/xgboost">XGBoost</a> package, readily available for R users via CRAN. A proper introduction to gradient boosting is beyond the scope of this post, but a couple of words can be justified.</p>
+<blockquote>
+<p><em>Gradient boosting directly targets the supervised learning objective <span class="math display">\[f^* = \arg\min_f E[l(y,f(\mathbf{x}))],\]</span> by, given an existing model <span class="math inline">\(f_0\)</span>, iteratively searching for an optimal step in function space <span class="math inline">\(f_k\)</span>, that approximately minimizes the above criterion (in a neighbourhood of <span class="math inline">\(f_0\)</span>) and can be added to the existing model <span class="math inline">\(f\leftarrow f_0 + \eta f_k\)</span>. Here <span class="math inline">\(\eta\)</span> is some small step-length.</em></p>
+</blockquote>
+<p>To naively search through all possible candidate models is an obvious infeasible task for combinatorial reasons. It therefore makes sense to constrain ourself to a family of functions from which <span class="math inline">\(f_k\)</span> is chosen. One such family that has shown itself to be extremely effective, is the class of classification and regression trees (CART) - reference. Trees has the following tractable properties:</p>
+<ul>
+<li>They fit local neighbourhoods.</li>
+<li>Their complexity range from the simple mean to potentially a complete fit to training data.</li>
+<li>Beats the curse of dimensionality (but not completely, seems to be of order <span class="math inline">\(\log(m)\)</span> where <span class="math inline">\(m\)</span> is the number of features).</li>
+<li>Can be trained very efficiently by greedy binary splitting (should be around order <span class="math inline">\(m n \log(n)\)</span>, where <span class="math inline">\(n\)</span> the number of observations).</li>
+</ul>
+<p>Difficulties with explainability for hundreds or thousands of trees are however a drawback. The following figure illustrates the iterative addition of trees, and eventually obtaining a better fit.</p>
+<p><img src="/post/2019-04-29-xgboost-and-yonsei-acceptance_files/figure-html/Boosting%20Illustration-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="lazy-eda-and-feature-engineering" class="section level3">
+<h3>Lazy EDA and feature engineering</h3>
+<p>Back to the data: Some columns have <code>NA</code> values, however if treated correctly, the algorithm that we will employ is capable of handling this on its own. However, it is necassry to remove uninformative columns: <details open> <summary> Basic cleaning, uninformative cols </summary></p>
+<pre class="r"><code># Uninformative columns
+yonsei &lt;- yonsei %&gt;%
+    dplyr::select(-c(&quot;rank&quot;)) %&gt;%
+    dplyr::rename(Accepted = &quot;Accepted/unaccepted&quot;)
+
+not_informative &lt;- which(yonsei %&gt;% sapply(function(x) length(unique(x))) &lt; 2)
+yonsei &lt;- yonsei %&gt;% 
+    dplyr::select(-c(names(not_informative)))
+
+# Uninformative as direct factor
+yonsei[,&quot;Whether taken Before or not&quot;] &lt;- ifelse(is.na(yonsei[,&quot;Whether taken Before or not&quot;]),0,1)
+
+# Character to factor
+character_vars &lt;- lapply(yonsei, class) == &quot;character&quot;
+yonsei[, character_vars] &lt;- lapply(yonsei[, character_vars], as.factor)
+rm(character_vars, not_informative); invisible(gc())</code></pre>
+<p></details></p>
+<p>Let’s take a short look at how some variables relate to the response. <details> <summary> Lazy EDA </summary></p>
+<pre class="r"><code>#cbPalette &lt;- c(&quot;#000000&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
+cbPalette &lt;- c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
+
+p1 &lt;- yonsei %&gt;%
+    ggplot(aes(`total credit of taken courses/total credits for graduation`)) + 
+    geom_density(aes(alpha=0.5, fill=Accepted)) + 
+    scale_fill_manual(values=cbPalette) + 
+    theme_bw()
+p2 &lt;- yonsei %&gt;%
+    ggplot(aes(x=`applied mileage`)) + 
+    geom_density(aes(alpha=0.5, fill=Accepted)) + 
+    scale_fill_manual(values=cbPalette) + 
+    theme_bw()
+p3 &lt;- yonsei %&gt;%
+    ggplot(aes(`Prescribed Seats`)) + 
+    geom_density(aes(alpha=0.5, fill=Accepted)) + 
+    scale_fill_manual(values=cbPalette) + 
+    theme_bw()
+p4 &lt;- yonsei %&gt;%
+    ggplot(aes(x=`Grade (year)`, color=Accepted, fill=Accepted)) +
+    geom_histogram(aes(y=..density..), alpha=0.5, position=&quot;identity&quot;, bins=6) + 
+    scale_fill_manual(values=cbPalette) + 
+    theme_bw()</code></pre>
+<p></details></p>
+<p><img src="/post/2019-04-29-xgboost-and-yonsei-acceptance_files/figure-html/EDA%20Multi-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>As can be seen, all of these features are somewhat informative (hint, they were not chosen at random).</p>
+<p>For feature engineering, I am extremely lazy, and just do the one-hot encoding. This is automatically done by the <code>model.matrix</code> function (which also creates a removable intercept column), with the drawback that <code>NA</code> values are removed. To avoid this, we also employ the <code>model.frame</code> function in the following code:</p>
+<p><details open> <summary> Creating the model matrix </summary></p>
+<pre class="r"><code>yonseimm &lt;- model.matrix(Accepted~., 
+                         data= model.frame(Accepted~., data=yonsei, na.action = na.pass))[,-1]</code></pre>
+<p></details></p>
+<p>This results in a dataset with quite a lot of columns: the dataset has dimensions 6520, 368.</p>
+<p>Finally, we need to split the data in a training and a test set. For this, we use 60% for training and 40% for testing later.</p>
+<p><details open> <summary> Splitting the data – test and train </summary></p>
+<pre class="r"><code>set.seed(1432)
+train_ind &lt;- sample(nrow(yonsei), 0.6*nrow(yonsei), replace = FALSE)
+dtrain &lt;- yonseimm[train_ind,]
+dtest &lt;- yonseimm[-train_ind,] 
+y &lt;- ifelse(yonsei$Accepted==&quot;X&quot;, 0, 1)
+y_train &lt;- y[train_ind]
+y_test &lt;- y[-train_ind]</code></pre>
+<p></details></p>
+</div>
+<div id="xgboost-parameter-tuning" class="section level3">
+<h3>XGBoost parameter tuning</h3>
+<p>For gradient tree boosting, we employ the amazing XGBoost library. Before we start the training, we need to specify a few hyperparameters. The most important ones are the following</p>
+<ul>
+<li><code>eta</code>: The <span class="math inline">\(\eta\)</span>, typically called the learning rate (the step-length in function space).</li>
+<li><code>max_depth</code> A maximum tree depth for all trees.</li>
+<li><code>nrounds</code>: The number of boosting iterations.</li>
+</ul>
+<p>The following are typically used for regularization.</p>
+<ul>
+<li><code>gamma</code>: Constant penalization for the number of nodes.</li>
+<li><code>lambda</code>: L2 regularization.</li>
+<li><code>alpha</code>: L1 regularization.</li>
+</ul>
+<p>The final ones I’ll mention are the sampling possiblities.</p>
+<ul>
+<li><code>subsample</code>: Row sampling without replacement.</li>
+<li><code>colsample_bytree</code>: Column subsampling.</li>
+</ul>
+<p>Note that because the row sampling is without replacement, this is not the same type of sampling as the bootstrapping/bagging approach of random forest. See <a href="https://xgboost.readthedocs.io/en/latest/parameter.html">this link for a full parameter specification list</a>.</p>
+<p><details> <summary> XGBoost initialization </summary></p>
+<pre class="r"><code># Simple model
+p.xgb &lt;- list(objective = &quot;binary:logistic&quot;,
+              booster = &quot;gbtree&quot;,
+              eval_metric = &quot;logloss&quot;,
+              nthread = 8,
+              eta = 0.3, # no time for low eta
+              max_depth = 3,
+              min_child_weight =5,
+              gamma = 0,
+              subsample = 0.8,
+              colsample_bytree = 0.6, # ncol(dtrain) is quite large, high sampling
+              colsample_bylevel = 0.3,
+              alpha = 0, # Tune if time
+              lambda = 0,
+              nrounds = 1000, # does not matter
+              early_stopping_rounds=100)
+p.xgb.reg &lt;- p.xgb</code></pre>
+<p></details></p>
+<p>We want to specify the hyperparameters in such a way that the model generalizes well to unseen data. To do this, we employ cross validation on a grid of hyperparameters. This is costly, of course, and my grid is therefore not very large. A properly tuned XGBoost model will have to search quite a bit more for optimal tuning.</p>
+<p><details open> <summary> XGBoost Hyperparemeter search using cross validation </summary></p>
+<pre class="r"><code>dtrain.xgb &lt;- xgb.DMatrix(data = dtrain, label = y_train)
+dtest.xgb &lt;- dtest
+
+gamma.grid &lt;- seq(0,1,length.out=5)
+cv.score &lt;- numeric(length(gamma.grid))#matrix(nrow=length(gamma.grid), ncol = length(lambda.grid))
+cv.niter &lt;- cv.score
+for(j in 1:length(gamma.grid)){
+    cat(&quot;j iter: &quot;, j, &quot;\n&quot;)
+    p.xgb.reg$gamma &lt;- gamma.grid[j]
+    cv.tmp &lt;- xgb.cv(p.xgb.reg,
+                     data = dtrain.xgb, nround = 10000,
+                     nfold = 5, prediction = TRUE, showsd = TRUE,
+                     early_stopping_round = p.xgb.reg$early_stopping_rounds, 
+                     maximize = FALSE, verbose = FALSE)
+    cv.score[j] &lt;- cv.tmp$evaluation_log[,min(test_logloss_mean)]
+    cv.niter[j] &lt;- cv.tmp$best_iteration
+}</code></pre>
+<p></details></p>
+<p>For this particular search on <code>gamma</code> and <code>nrounds</code> we end up with the values 0.5 and 1436 respectively.</p>
+</div>
+<div id="the-final-model-and-results" class="section level3">
+<h3>The final model and results</h3>
+<p>Finally ready for the training phase, this is a one-liner.</p>
+<p><details open> <summary> Training the final model </summary></p>
+<pre class="r"><code>mod_xgb &lt;- xgb.train(p.xgb, dtrain.xgb, p.xgb$nrounds)</code></pre>
+<p></details></p>
+<p>Trees (and ensembles of such) have a natural measure of feature importance. We may use this to see which features are important for the model.</p>
+<p><details> <summary> Feature importance </summary></p>
+<pre class="r"><code>names &lt;- dimnames(dtrain)[[2]]
+importance_matrix &lt;- xgb.importance(names, model=mod_xgb)</code></pre>
+<p></details></p>
+<p><img src="/post/2019-04-29-xgboost-and-yonsei-acceptance_files/figure-html/plot%20feature%20Importance-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="results" class="section level3">
+<h3>Results</h3>
+<p>Having trained our model, we wish to see how well it performs on unseen data. <details open> <summary> Prediction on test </summary></p>
+<pre class="r"><code>prob.xgb &lt;- xgboost:::predict.xgb.Booster(mod_xgb, dtest)</code></pre>
+<p></details> We create a very useful plot for binary classifications: the distribution of the estimated probabilities, conditioned on the outcome, and see if we are able to separate the two classes. In addition, we may check the log-loss values and the accuracy.</p>
+<p><details> <summary> Conditional distribution of estimated probabilities </summary></p>
+<pre class="r"><code>p1 &lt;- data.frame(prob=prob.xgb, Accepted=y_test) %&gt;%
+    ggplot(aes(prob)) + 
+    geom_density(aes(alpha=0.5, fill = factor(Accepted))) + 
+    xlab(&quot;estimated probability&quot;) + 
+    ggtitle(&quot;Distribution of estimated probability, conditioned on Accepted&quot;) + 
+    scale_fill_manual(values=cbPalette) + 
+    theme_bw()</code></pre>
+<p></details></p>
+<p><img src="/post/2019-04-29-xgboost-and-yonsei-acceptance_files/figure-html/Plot%20results-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>This looks pretty good! Specifically, we get a log-loss score at 0.24 and the accuracy is 0.91 for the training data. This is quite good, considering that we did not optimize for accuracy.</p>
+</div>
