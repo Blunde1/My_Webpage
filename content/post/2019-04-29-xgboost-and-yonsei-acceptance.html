@@ -876,7 +876,7 @@ l(y,\hat{p}) = - y \log(\hat{p}) - (1-y)\log(1-\hat{p})
 </div>
 <div id="gradient-tree-boosting" class="section level3">
 <h3>Gradient tree boosting</h3>
-<p>For this type of structured data, there is an algorithm that, for the last firve years or so, has dominated in machine learning competitions. I am of course talking about gradient tree boosting, which I believe rose to fame via the <a href="https://github.com/dmlc/xgboost">XGBoost</a> package, readily available for R users via CRAN. A proper introduction to gradient boosting is beyond the scope of this post, but a couple of words can be justified.</p>
+<p>For this type of structured data, there is an algorithm that, for the last five years or so, has dominated in machine learning competitions. I am of course talking about gradient tree boosting, which I believe rose to fame via the <a href="https://github.com/dmlc/xgboost">XGBoost</a> package, readily available for R users via CRAN. A proper introduction to gradient boosting is beyond the scope of this post, but a couple of words can be justified.</p>
 <blockquote>
 <p><em>Gradient boosting directly targets the supervised learning objective <span class="math display">\[f^* = \arg\min_f E[l(y,f(\mathbf{x}))],\]</span> by, given an existing model <span class="math inline">\(f_0\)</span>, iteratively searching for an optimal step in function space <span class="math inline">\(f_k\)</span>, that approximately minimizes the above criterion (in a neighbourhood of <span class="math inline">\(f_0\)</span>) and can be added to the existing model <span class="math inline">\(f\leftarrow f_0 + \eta f_k\)</span>. Here <span class="math inline">\(\eta\)</span> is some small step-length.</em></p>
 </blockquote>
