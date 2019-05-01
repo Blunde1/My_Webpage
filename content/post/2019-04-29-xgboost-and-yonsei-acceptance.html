@@ -880,7 +880,7 @@ l(y,\hat{p}) = - y \log(\hat{p}) - (1-y)\log(1-\hat{p})
 <blockquote>
 <p><em>Gradient boosting directly targets the supervised learning objective <span class="math display">\[f^* = \arg\min_f E[l(y,f(\mathbf{x}))],\]</span> by, given an existing model <span class="math inline">\(f_0\)</span>, iteratively searching for an optimal step in function space <span class="math inline">\(f_k\)</span>, that approximately minimizes the above criterion (in a neighbourhood of <span class="math inline">\(f_0\)</span>) and can be added to the existing model <span class="math inline">\(f\leftarrow f_0 + \eta f_k\)</span>. Here <span class="math inline">\(\eta\)</span> is some small step-length.</em></p>
 </blockquote>
-<p>To naively search through all possible candidate models is an obvious infeasible task for combinatorial reasons. It therefore makes sense to constrain ourself to a family of functions from which <span class="math inline">\(f_k\)</span> is chosen. One such family that has shown itself to be extremely effective, is the class of classification and regression trees (CART) - reference. Trees has the following tractable properties:</p>
+<p>To naively search through all possible candidate models is an obvious infeasible task for combinatorial reasons. It therefore makes sense to constrain ourself to a family of functions from which <span class="math inline">\(f_k\)</span> is chosen. One such family that has shown itself to be extremely effective, is the class of classification and regression trees (CART). Trees has the following tractable properties:</p>
 <ul>
 <li>They fit local neighbourhoods.</li>
 <li>Their complexity range from the simple mean to potentially a complete fit to training data.</li>
