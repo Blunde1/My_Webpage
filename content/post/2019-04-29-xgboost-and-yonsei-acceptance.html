@@ -1,8 +1,8 @@
 ---
-title: XGBoost and Yonsei Acceptance
+title: XGBoost and University Course Acceptance
 author: Berent Lunde
 date: '2019-04-30'
-slug: xgboost-and-yonsei-acceptance
+slug: xgboost-and-university-course-acceptance
 categories:
   - R
   - Boosting
@@ -28,7 +28,7 @@ output:
 
 <div id="student-acceptance" class="section level3">
 <h3>Student acceptance</h3>
-<p>Lately I got to play with some very interesting data, relating to student acceptance (and ranking) into applied courses from Yonsei university in Korea. Yonsei university is one of the three famous SKY universities in Korea (Seoul National University, Korea University and Yonsei university) where life is super competetive in almost every way. It is therefore very interesting to see what drives acceptance, and what can students do to improve their chances?</p>
+<p>Lately I got to play with some very interesting data, relating to student acceptance (and ranking) into applied courses from a university in Korea. The university (which name must be hidden) is a highly ranked university in Korea, and life there is super competetive in almost every way. It is therefore very interesting to see what drives acceptance, and what can students do to improve their chances?</p>
 <p>On a different note, I’ve been wanting to write a post on gradient tree boosting, which just so happens to be state of the art machine learning for this type of data and problem. I will therefore use some space designated to this purpose as well.</p>
 <ul>
 <li><strong>Note:</strong> Some code-blocks have been hidden. Click their names to unfold them.</li>
@@ -46,10 +46,10 @@ library(grid) # Visualizations - grid for ggplot
 library(gridExtra) # Visualizations - grid for ggplot</code></pre>
 <p></details></p>
 <p><details> <summary> Loading data </summary></p>
-<pre class="r"><code>yonsei &lt;- as.data.frame(read_excel(&quot;yonsei-acceptance/yonsei-acceptance.xlsx&quot;))
-yonsei_translation &lt;- read_excel(&quot;yonsei-acceptance/yonsei-translation.xlsx&quot;)
-names(yonsei) &lt;- names(yonsei_translation)
-rm(yonsei_translation); invisible(gc())</code></pre>
+<pre class="r"><code>acceptance &lt;- as.data.frame(read_excel(&quot;student-acceptance/student-acceptance.xlsx&quot;))
+acceptance_translation &lt;- read_excel(&quot;student-acceptance/student-translation.xlsx&quot;)
+names(acceptance) &lt;- names(acceptance_translation)
+rm(acceptance_translation); invisible(gc())</code></pre>
 <p></details></p>
 <!-- <details> <summary> Multiplot function </summary> -->
 <!-- </details> -->
@@ -60,7 +60,7 @@ rm(yonsei_translation); invisible(gc())</code></pre>
 <tr>
 <th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; position: sticky; top:0; background-color: #FFFFFF;" colspan="6">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
-The Yonsei Acceptance Data (head)
+The Student Acceptance Data (head)
 </div>
 </th>
 <th style="border-bottom:hiddenposition: sticky; top:0; background-color: #FFFFFF;" colspan="31">
@@ -894,42 +894,42 @@ l(y,\hat{p}) = - y \log(\hat{p}) - (1-y)\log(1-\hat{p})
 <h3>Lazy EDA and feature engineering</h3>
 <p>Back to the data: Some columns have <code>NA</code> values, however if treated correctly, the algorithm that we will employ is capable of handling this on its own. However, it is necassry to remove uninformative columns: <details open> <summary> Basic cleaning, uninformative cols </summary></p>
 <pre class="r"><code># Uninformative columns
-yonsei &lt;- yonsei %&gt;%
+acceptance &lt;- acceptance %&gt;%
     dplyr::select(-c(&quot;rank&quot;)) %&gt;%
     dplyr::rename(Accepted = &quot;Accepted/unaccepted&quot;)
 
-not_informative &lt;- which(yonsei %&gt;% sapply(function(x) length(unique(x))) &lt; 2)
-yonsei &lt;- yonsei %&gt;% 
+not_informative &lt;- which(acceptance %&gt;% sapply(function(x) length(unique(x))) &lt; 2)
+acceptance &lt;- acceptance %&gt;% 
     dplyr::select(-c(names(not_informative)))
 
 # Uninformative as direct factor
-yonsei[,&quot;Whether taken Before or not&quot;] &lt;- ifelse(is.na(yonsei[,&quot;Whether taken Before or not&quot;]),0,1)
+acceptance[,&quot;Whether taken Before or not&quot;] &lt;- ifelse(is.na(acceptance[,&quot;Whether taken Before or not&quot;]),0,1)
 
 # Character to factor
-character_vars &lt;- lapply(yonsei, class) == &quot;character&quot;
-yonsei[, character_vars] &lt;- lapply(yonsei[, character_vars], as.factor)
+character_vars &lt;- lapply(acceptance, class) == &quot;character&quot;
+acceptance[, character_vars] &lt;- lapply(acceptance[, character_vars], as.factor)
 rm(character_vars, not_informative); invisible(gc())</code></pre>
 <p></details></p>
 <p>Let’s take a short look at how some variables relate to the response. <details> <summary> Lazy EDA </summary></p>
 <pre class="r"><code>#cbPalette &lt;- c(&quot;#000000&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
 cbPalette &lt;- c(&quot;#999999&quot;, &quot;#E69F00&quot;, &quot;#56B4E9&quot;, &quot;#009E73&quot;, &quot;#F0E442&quot;, &quot;#0072B2&quot;, &quot;#D55E00&quot;, &quot;#CC79A7&quot;)
 
-p1 &lt;- yonsei %&gt;%
+p1 &lt;- acceptance %&gt;%
     ggplot(aes(`total credit of taken courses/total credits for graduation`)) + 
     geom_density(aes(alpha=0.5, fill=Accepted)) + 
     scale_fill_manual(values=cbPalette) + 
     theme_bw()
-p2 &lt;- yonsei %&gt;%
+p2 &lt;- acceptance %&gt;%
     ggplot(aes(x=`applied mileage`)) + 
     geom_density(aes(alpha=0.5, fill=Accepted)) + 
     scale_fill_manual(values=cbPalette) + 
     theme_bw()
-p3 &lt;- yonsei %&gt;%
+p3 &lt;- acceptance %&gt;%
     ggplot(aes(`Prescribed Seats`)) + 
     geom_density(aes(alpha=0.5, fill=Accepted)) + 
     scale_fill_manual(values=cbPalette) + 
     theme_bw()
-p4 &lt;- yonsei %&gt;%
+p4 &lt;- acceptance %&gt;%
     ggplot(aes(x=`Grade (year)`, color=Accepted, fill=Accepted)) +
     geom_histogram(aes(y=..density..), alpha=0.5, position=&quot;identity&quot;, bins=6) + 
     scale_fill_manual(values=cbPalette) + 
@@ -939,17 +939,17 @@ p4 &lt;- yonsei %&gt;%
 <p>As can be seen, all of these features are somewhat informative (hint, they were not chosen at random).</p>
 <p>For feature engineering, I am extremely lazy, and just do the one-hot encoding. This is automatically done by the <code>model.matrix</code> function (which also creates a removable intercept column), with the drawback that <code>NA</code> values are removed. To avoid this, we also employ the <code>model.frame</code> function in the following code:</p>
 <p><details open> <summary> Creating the model matrix </summary></p>
-<pre class="r"><code>yonseimm &lt;- model.matrix(Accepted~., 
-                         data= model.frame(Accepted~., data=yonsei, na.action = na.pass))[,-1]</code></pre>
+<pre class="r"><code>acceptancemm &lt;- model.matrix(Accepted~., 
+                         data= model.frame(Accepted~., data=acceptance, na.action = na.pass))[,-1]</code></pre>
 <p></details></p>
 <p>This results in a dataset with quite a lot of columns: the dataset has dimensions 6520, 368.</p>
 <p>Finally, we need to split the data in a training and a test set. For this, we use 60% for training and 40% for testing later.</p>
 <p><details open> <summary> Splitting the data – test and train </summary></p>
 <pre class="r"><code>set.seed(1432)
-train_ind &lt;- sample(nrow(yonsei), 0.6*nrow(yonsei), replace = FALSE)
-dtrain &lt;- yonseimm[train_ind,]
-dtest &lt;- yonseimm[-train_ind,] 
-y &lt;- ifelse(yonsei$Accepted==&quot;X&quot;, 0, 1)
+train_ind &lt;- sample(nrow(acceptance), 0.6*nrow(acceptance), replace = FALSE)
+dtrain &lt;- acceptancemm[train_ind,]
+dtest &lt;- acceptancemm[-train_ind,] 
+y &lt;- ifelse(acceptance$Accepted==&quot;X&quot;, 0, 1)
 y_train &lt;- y[train_ind]
 y_test &lt;- y[-train_ind]</code></pre>
 <p></details></p>
