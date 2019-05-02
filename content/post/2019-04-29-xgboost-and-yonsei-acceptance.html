@@ -1,8 +1,8 @@
 ---
-title: XGBoost and University Course Acceptance
+title: XGBoost and University Acceptance
 author: Berent Lunde
 date: '2019-04-30'
-slug: xgboost-and-university-course-acceptance
+slug: xgboost-and-university-acceptance
 categories:
   - R
   - Boosting
@@ -13,7 +13,7 @@ tags:
   - R
   - XGBoost
   - tidyverse
-  - Yonsei acceptance
+  - Student acceptance
 output:
   html_document:
     toc: true
@@ -63,7 +63,7 @@ rm(acceptance_translation); invisible(gc())</code></pre>
 The Student Acceptance Data (head)
 </div>
 </th>
-<th style="border-bottom:hiddenposition: sticky; top:0; background-color: #FFFFFF;" colspan="31">
+<th style="border-bottom:hiddenposition: sticky; top:0; background-color: #FFFFFF;" colspan="27">
 </th>
 </tr>
 <tr>
@@ -77,13 +77,7 @@ Class Division
 Training Class Division
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Course name
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 Name of Prof.
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Lecture time
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 Opened Faculty
@@ -105,12 +99,6 @@ Prescribed Seats for freshman
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 Prescribed Seats for 2nd year
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Prescribed Seats for 3rd year
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Prescribed Seats for 4th year
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 Faculty of 1st major
@@ -192,13 +180,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -220,12 +202,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 경영학과
@@ -305,13 +281,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -333,12 +303,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 신학과
@@ -418,13 +382,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -446,12 +404,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 철학
@@ -531,13 +483,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -559,12 +505,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 식품영양
@@ -644,13 +584,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -672,12 +606,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 신학과
@@ -757,13 +685,7 @@ BIZ1101
 00
 </td>
 <td style="text-align:left;">
-회계원리(1)
-</td>
-<td style="text-align:left;">
 주인기
-</td>
-<td style="text-align:left;">
-월7,8,9
 </td>
 <td style="text-align:left;">
 경영대학 경영학전공
@@ -785,12 +707,6 @@ Y
 </td>
 <td style="text-align:right;">
 36
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-8
 </td>
 <td style="text-align:left;">
 경영학과
