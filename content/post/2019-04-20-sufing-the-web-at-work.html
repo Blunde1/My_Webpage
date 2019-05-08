@@ -19,7 +19,7 @@ image:
 
 
 
-<p>In my <a href="https://berentlunde.netlify.com/post/2019-04-19-bessel-function/">previous post</a>, I mentioned my friend and previous co-worker at Tryg, <a href="https://www.linkedin.com/in/ole-schei-27674211/">Ole Schei</a>, that is wonderfully maticious, and has for some time quantified aspects of his life in a time-series format. This is, of course, a natural thing to do for an actuary. While we both worked at Tryg I was allowed to look at one of these time-series – the one containing detailed information about Ole’s web-surfing (for non work-related matters) at work. This has since become my favourite dataset, perhaps because of the way it was created, but also because the modelling is fun and the absurdity in modelling Ole as a mean-reverting doubly stochastic Poisson process (which we will eventually do). I will here work on an aggregated version of these data.</p>
+<p>In my <a href="https://berentlunde.netlify.com/post/2019-04-19-bessel-function/">previous post</a>, I mentioned my friend and previous co-worker at Tryg, <a href="https://www.linkedin.com/in/ole-schei-27674211/">Ole Schei</a>, that is wonderfully meticulous, and has for some time quantified aspects of his life in a time-series format. This is, of course, a natural thing to do for an actuary. While we both worked at Tryg I was allowed to look at one of these time-series – the one containing detailed information about Ole’s web-surfing (for non work-related matters) at work. This has since become my favourite dataset, perhaps because of the way it was created, but also because the modelling is fun and the absurdity in modelling Ole as a mean-reverting doubly stochastic Poisson process (which we will eventually do). I will here work on an aggregated version of these data. As usual, click the arrows to see the code.</p>
 <p>These data are visualized in the next figure. In this plot, I’ve added a constant line, which refers to the expected number web-surfs per day, given that Ole is a Poisson process with constant intensity.</p>
 <p><details><summary> Ole as an ordinary Poisson process </summary></p>
 <pre class="r"><code># Build the likelihood function
@@ -153,7 +153,7 @@ opt &lt;- nlminb(obj$par, obj$fn, obj$gr)
 rep &lt;- sdreport(obj)</code></pre>
 <p></details></p>
 <p>Did we converge? TRUE.</p>
-<p>Finally, we plot the model.</p>
+<p>Finally, we plot the results.</p>
 <p><details><summary> Organizing TMB results and plotting </summary></p>
 <pre class="r"><code># Information from report, fixed effects
 srep_fixed &lt;- summary(rep, select = c(&quot;report&quot;, &quot;fixed&quot;), p.value = TRUE) %&gt;% 
@@ -198,7 +198,7 @@ report &lt;- srep %&gt;%
 cols &lt;- c(&quot;Estimated stochastic intensity&quot;=&quot;black&quot;, 
           &quot;Realizations of Ole&quot;=&quot;lightgrey&quot;, 
           &quot;Intensity 95% Confidence Interval&quot;=&quot;red&quot;, 
-          &quot;Constant Poisson intensity&quot; = &quot;green&quot;,
+          &quot;Constant Poisson intensity&quot; = &quot;orange&quot;,
           &quot;Asymptotic integrated intensity&quot; = &quot;blue&quot;,
           &quot;Process 95% Confidence Interval&quot; = &quot;lightblue&quot;)
 p &lt;- 

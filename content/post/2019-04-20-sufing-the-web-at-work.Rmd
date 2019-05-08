@@ -29,11 +29,12 @@ source("surfing-the-web-at-work/data_management.r")
 ```
 
 
-In my [previous post](https://berentlunde.netlify.com/post/2019-04-19-bessel-function/), I mentioned my friend and previous co-worker at Tryg, [Ole Schei](https://www.linkedin.com/in/ole-schei-27674211/), that is wonderfully maticious, and has for some time quantified aspects of his life in a time-series format.
+In my [previous post](https://berentlunde.netlify.com/post/2019-04-19-bessel-function/), I mentioned my friend and previous co-worker at Tryg, [Ole Schei](https://www.linkedin.com/in/ole-schei-27674211/), that is wonderfully meticulous, and has for some time quantified aspects of his life in a time-series format.
 This is, of course, a natural thing to do for an actuary.
 While we both worked at Tryg I was allowed to look at one of these time-series -- the one containing detailed information about Ole's web-surfing (for non work-related matters) at work.
 This has since become my favourite dataset, perhaps because of the way it was created, but also because the modelling is fun and the absurdity in modelling Ole as a mean-reverting doubly stochastic Poisson process (which we will eventually do).
 I will here work on an aggregated version of these data.
+As usual, click the arrows to see the code.
 
 These data are visualized in the next figure.
 In this plot, I've added a constant line, which refers to the expected number web-surfs per day, given that Ole is a Poisson process with constant intensity.
@@ -227,7 +228,7 @@ rep <- sdreport(obj)
 
 Did we converge? `r opt$convergence==0`.
 
-Finally, we plot the model.
+Finally, we plot the results.
 
 <details><summary> Organizing TMB results and plotting </summary>
 ```{r}
@@ -275,7 +276,7 @@ report <- srep %>%
 cols <- c("Estimated stochastic intensity"="black", 
           "Realizations of Ole"="lightgrey", 
           "Intensity 95% Confidence Interval"="red", 
-          "Constant Poisson intensity" = "green",
+          "Constant Poisson intensity" = "orange",
           "Asymptotic integrated intensity" = "blue",
           "Process 95% Confidence Interval" = "lightblue")
 p <- 
