@@ -1,9 +1,9 @@
 ---
-title: Sufing the Web at Work
+title: Surfing the Web at Work
 subtitle: Or, modelling a co-workers web-surfing as a mean-reverting doubly stochastic Poisson process, and estimation
 author: Berent Å. S. Lunde
 date: '2019-05-08'
-slug: sufing-the-web-at-work
+slug: surfing-the-web-at-work
 categories:
   - C++
   - R
