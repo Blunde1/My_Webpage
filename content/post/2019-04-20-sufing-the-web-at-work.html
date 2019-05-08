@@ -1,0 +1,227 @@
+---
+title: Sufing the Web at Work
+subtitle: Or, modelling a co-workers web-surfing as a mean-reverting doubly stochastic Poisson process, and estimation
+author: Berent Å. S. Lunde
+date: '2019-05-08'
+slug: sufing-the-web-at-work
+categories:
+  - C++
+  - R
+  - Affine latent variables
+tags:
+  - AD
+  - TMB
+  - Bessel
+image:
+  caption: ''
+  focal_point: ''
+---
+
+
+
+<p>In my <a href="https://berentlunde.netlify.com/post/2019-04-19-bessel-function/">previous post</a>, I mentioned my friend and previous co-worker at Tryg, <a href="https://www.linkedin.com/in/ole-schei-27674211/">Ole Schei</a>, that is wonderfully maticious, and has for some time quantified aspects of his life in a time-series format. This is, of course, a natural thing to do for an actuary. While we both worked at Tryg I was allowed to look at one of these time-series – the one containing detailed information about Ole’s web-surfing (for non work-related matters) at work. This has since become my favourite dataset, perhaps because of the way it was created, but also because the modelling is fun and the absurdity in modelling Ole as a mean-reverting doubly stochastic Poisson process (which we will eventually do). I will here work on an aggregated version of these data.</p>
+<p>These data are visualized in the next figure. In this plot, I’ve added a constant line, which refers to the expected number web-surfs per day, given that Ole is a Poisson process with constant intensity.</p>
+<p><details><summary> Ole as an ordinary Poisson process </summary></p>
+<pre class="r"><code># Build the likelihood function
+jnll &lt;- function(lambda){
+    -sum(dpois(N,lambda*7,log=TRUE))
+}
+
+# Optimize the likelihood
+opt_pois &lt;- nlminb(1,jnll,lower=0)
+
+# Throw data into a data frame
+data &lt;- data.frame(&quot;daily_surfs&quot;=N,
+                   &quot;time&quot;=1:length(N),
+                   &quot;constant_intensity&quot;=rep(opt_pois$par*7, length(N)))</code></pre>
+<p></details></p>
+<p><img src="/post/2019-04-20-sufing-the-web-at-work_files/figure-html/unnamed-chunk-1-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>It is easy to see that Ole is no ordinary constant-intensity Poisson process. He is a complex being, and cannot be reducted to such a simple object! A doubly stochastic Poisson process is much more appropriate. For such a model the intensity for which he surfs is much more flexible (and stochastic). To truly understand him (and his surf-intensity/urge-to-surf), we must ask ourselves: what is Ole?</p>
+<p><strong>Answers</strong></p>
+<ul>
+<li>Ole lives in continuous-time.</li>
+<li>Ole’s underlying urge to surf the web is what governs his realizations.</li>
+<li>Random events influence his mood and urge to surf from time to time.</li>
+<li>Ole is not a slave, he has some free will and the power to express it. His urge for web-surfing therefore never goes to zero.</li>
+<li>He is neither an addict, nor does he hate his work (to the best of my knowledge). The counts of web-surfs therefore does not sky-rocket.</li>
+</ul>
+<p>These properties suggest a continous-time process that is strictly positive, has a mean-reverting property and therefore stops the web-surfing from taking off. One such model is the Cox-Ingersoll-Ross (CIR) model, defined by the stochastic differential equation (SDE) <span class="math display">\[d\lambda_t = \kappa (\alpha - \lambda_t)dt + \sigma \sqrt(\lambda_t) dW_t.\]</span></p>
+<p>Let the urge to surf, integrated over a day, <span class="math inline">\(u_t=\int_{t_0}^t \lambda_s ds\)</span> be given, then the probability mass function is given as <span class="math display">\[p(n) =\frac{u_t^n e^{-u}}{n!}.\]</span></p>
+<p>Our problem is that <span class="math inline">\(u_t\)</span> is unobserved. My original idea was to use that <span class="math inline">\(\lambda_t\)</span> is of the affine type, and therefore the characteristic function of <span class="math inline">\(u_t\)</span> is easily given as <span class="math display">\[\varphi_{u_t}(s) = \int_{\Omega} e^{isu_t}p(u_t) du_t = e^{A(t_0,t) + B(t_0,t)\lambda_{t_0}},\]</span> where <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are found from solving a system of Ricatti differential equations. Inverting the characteristic function to obtain the density, we may build the joint likelihood for observed number of surf-times and integrated intensities, and finally integrate out everything that is latent. I implemented this, but have been struggelig with some numerical issues. I will try to work out the numerics later, but for this post, we do an approximation to <span class="math inline">\(u_t\)</span> and the distribution of <span class="math inline">\(\lambda_t\)</span> that turns out to work okay.</p>
+<p>First, do an Euler approximation on the dynamics of Ole’s urge: <span class="math display">\[\lambda_t \approx \lambda_{t_0} + \kappa (\alpha - \lambda_{t_0})dt + \sigma \sqrt(\lambda_{t_0}) N\left(0,\sqrt(dt)\right)\]</span> which is obviously normally distributed. Next, use some numerical scheme to integrate to <span class="math inline">\(u\)</span>. Here, I’ll just use the elementary trapezoid rule: <span class="math inline">\(u_t = dt (\lambda_t - \lambda_{t_0})/2\)</span>, in which <span class="math inline">\(dt=7\)</span> for a typical work-day for Ole. In this setup, the only thing latent is <span class="math inline">\(\{\lambda_i\}_{i=1}^n\)</span> corresponding to the time-points of the observations. Finally, I will use the Laplace approximation to integrate out the latent variables. TMB is used for calculations.</p>
+<p><details><summary> TMB infill approximate COX </summary></p>
+<pre class="c"><code>// Likelihood density of a doubly stochastic Poisson process
+
+#include&lt;TMB.hpp&gt;
+
+template&lt;class Type&gt;
+Type trapezoid_rule(Type fa, Type fb, Type dt){
+    return dt* (fb+fa)/2;
+}
+
+
+template&lt;class Type&gt;
+Type objective_function&lt;Type&gt;::operator()()
+{
+    DATA_VECTOR(N);
+    DATA_SCALAR(dt); // timestep between lambdas
+    //DATA_INTEGER(ghiter);
+    PARAMETER(kappa);
+    PARAMETER(alpha);
+    PARAMETER(logSigma); Type sigma = exp(logSigma);
+    PARAMETER_VECTOR(logLambda); matrix&lt;Type&gt; lambda = exp(logLambda.array()); // (n+1 X m)
+    //PARAMETER_MATRIX(logLambda);
+    //vector&lt;Type&gt; lambda = log.Lambda.exp();
+    
+    Type nll = 0;
+    Type drift, diffusion;
+    int n = N.size(); // Number of observations
+    int m = lambda.cols(); // Number of infill random effects
+    int i=0, j=0; // Iterators
+    
+    // CIR: dX = kappa*(alpha-X)dt + sigma*sqrt(X)dW
+    
+    /** Contribution from infill intensity random effect */
+    Type log_c, q, omega, log_u, log_v;
+    log_c = log(2*kappa) - log(1-exp(-kappa*dt)) - 2*log(sigma); // 24: 24 hours
+    q = 2*kappa*alpha / (sigma*sigma);
+    
+    // first observation - asymptotic distribution
+    omega = 2*kappa/(sigma*sigma);
+    nll -= q*log(omega) + (q-1)*log(lambda(0,0)) - omega*lambda(0,0) - lgamma(q);
+    for(j=1; j&lt;m; j++){
+        // Intensities conditioned on previous intensities same day
+        drift = lambda(i,j-1) + kappa*(alpha - lambda(i, j-1))*dt;
+        diffusion = sigma * sqrt(lambda(i, j-1)*dt);
+        nll -= dnorm(lambda(i,j), drift, diffusion, true);
+    }
+    
+    // All other random effects
+    for(i=1; i&lt;(n+1); i++){
+        // First intensity current day conditioned on last intensity previous day
+        drift = lambda(i-1,m-1) + kappa*(alpha - lambda(i-1, m-1))*dt;
+        diffusion = sigma * sqrt(lambda(i-1, m-1)*dt);
+        nll -= dnorm(lambda(i,0), drift, diffusion, true);
+        for(j=1; j&lt;m; j++){
+            // Intensities conditioned on previous intensities same day
+            drift = lambda(i,j-1) + kappa*(alpha - lambda(i, j-1))*dt;
+            diffusion = sigma * sqrt(lambda(i, j-1)*dt);
+            nll -= dnorm(lambda(i,j), drift, diffusion, true);
+            }
+    }
+    
+    /** Contribution from observations */
+    //vector&lt;Type&gt; u = lambda.rowwise().sum() * dt; // Box integration
+    vector&lt;Type&gt; u(n); // Trapezoid rule
+    u.setZero();
+    for(i=0; i&lt;n; i++){
+        u(i) += lambda(i,0);
+        for(j=1; j&lt;m; j++){
+            u(i) += 2*lambda(i,j);
+        }
+        u(i) += lambda(i+1,0);
+        u(i) = dt * u(i) / 2;
+    }
+    ADREPORT(u);
+    for(i=0; i&lt;n; i++){
+        nll -= (N[i]*log(u[i]) - u[i] - lgamma(N[i]+1));
+    }
+    
+    return nll;
+    
+}</code></pre>
+<p></details></p>
+<p><details><summary> Correspoding R code for optimization </summary></p>
+<pre class="r"><code>compile(&quot;surfing-the-web-at-work/mrdspp_euler.cpp&quot;)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>dyn.load(dynlib(&quot;surfing-the-web-at-work/mrdspp_euler&quot;))
+
+#control
+N &lt;- N
+kappa &lt;- 0.2
+alpha &lt;- 2
+sigma &lt;- 0.1
+
+m &lt;- 1
+dt &lt;- 7 / m # 7 hour work day divided by m
+lambda &lt;- matrix(alpha, nrow=length(N)+1, ncol=m)
+
+DATA &lt;- list(N=N, dt=dt)
+PARAMETERS &lt;- list(kappa=kappa, alpha=alpha, logSigma=log(sigma), logLambda=log(lambda))
+obj &lt;- MakeADFun( DATA, PARAMETERS, random=c(&quot;logLambda&quot;), silent = T )
+opt &lt;- nlminb(obj$par, obj$fn, obj$gr)
+rep &lt;- sdreport(obj)</code></pre>
+<p></details></p>
+<p>Did we converge? TRUE.</p>
+<p>Finally, we plot the model.</p>
+<p><details><summary> Organizing TMB results and plotting </summary></p>
+<pre class="r"><code># Information from report, fixed effects
+srep_fixed &lt;- summary(rep, select = c(&quot;report&quot;, &quot;fixed&quot;), p.value = TRUE) %&gt;% 
+    tibble::as_tibble(rownames = NA) %&gt;%
+    tibble::rownames_to_column() %&gt;% 
+    dplyr::rename(parameter = rowname, 
+                  estimate = Estimate, 
+                  std_error = `Std. Error`,
+                  z_value = `z value`,
+                  p_value = `Pr(&gt;|z^2|)`) %&gt;% 
+    mutate(type = &quot;fixed&quot;)
+
+# Information from report, random effects
+srep_random &lt;- summary(rep, select = c(&quot;random&quot;), p.value = TRUE) %&gt;% 
+    tibble::as_tibble(rownames = NA) %&gt;%
+    tibble::rownames_to_column() %&gt;% 
+    dplyr::rename(parameter = rowname, 
+                  estimate = Estimate, 
+                  std_error = `Std. Error`,
+                  z_value = `z value`,
+                  p_value = `Pr(&gt;|z^2|)`) %&gt;% 
+    mutate(type = &quot;random&quot;) %&gt;% 
+    dplyr::mutate(parameter = ifelse(parameter == &quot;h&quot;, paste0(&quot;h&quot;, 1:n()), parameter))
+
+# Combine information
+srep &lt;- dplyr::bind_rows(srep_fixed, srep_random)
+
+# Add data information and confidence estimates
+report &lt;- srep %&gt;% 
+    filter(parameter == &quot;u&quot;) %&gt;% 
+    mutate(
+        N = N,
+        time = 1:n(),
+        Poisson = opt_pois$par * dt,
+        lt_int_mean = opt$par[&quot;alpha&quot;]*dt,
+       u_upper = estimate + 2 * std_error,
+       u_lower = estimate - 2 * std_error,
+       N_upper = estimate + 2*sqrt(estimate),
+       N_lower = estimate - 2*sqrt(estimate))
+
+# Colours for plot
+cols &lt;- c(&quot;Estimated stochastic intensity&quot;=&quot;black&quot;, 
+          &quot;Realizations of Ole&quot;=&quot;lightgrey&quot;, 
+          &quot;Intensity 95% Confidence Interval&quot;=&quot;red&quot;, 
+          &quot;Constant Poisson intensity&quot; = &quot;green&quot;,
+          &quot;Asymptotic integrated intensity&quot; = &quot;blue&quot;,
+          &quot;Process 95% Confidence Interval&quot; = &quot;lightblue&quot;)
+p &lt;- 
+    ggplot(report) + 
+    geom_line(aes(time, estimate, color=&quot;Estimated stochastic intensity&quot;), size = 2) + 
+    geom_line(aes(time, N, color=&quot;Realizations of Ole&quot;)) +
+    geom_point(aes(time, N), shape=15, color=&quot;black&quot;, size=1, alpha=0.5) + 
+    geom_line(aes(time, u_upper, color=&quot;Intensity 95% Confidence Interval&quot;),size = 0.3) + 
+    geom_line(aes(time, u_lower, color=&quot;Intensity 95% Confidence Interval&quot;), size = 0.3) + 
+    geom_ribbon(aes(time, ymax = u_upper, ymin = u_lower), fill = &quot;red&quot;, alpha= 0.10) + 
+    geom_line(aes(time, Poisson, color=&quot;Constant Poisson intensity&quot;), size=1.5, linetype=&quot;dashed&quot;) +
+    geom_line(aes(time, lt_int_mean, color=&quot;Asymptotic integrated intensity&quot;), size=1.5, linetype=&quot;dashed&quot;) +
+    geom_line(aes(time, N_upper, color=&quot;Process 95% Confidence Interval&quot;), size=0.3) + 
+    geom_line(aes(time, N_lower, color=&quot;Process 95% Confidence Interval&quot;), size=0.3) + 
+    geom_ribbon(aes(time, ymax = N_upper, ymin = N_lower), fill = &quot;blue&quot;, alpha= 0.02) + 
+    ggtitle(&quot;Ole&#39;s web-surfing at work: A mean-reverting doubly stochastic Poisson process&quot;) + 
+    xlab(&quot;Day&quot;) +
+    ylab(&quot;Count of surfs per day&quot;) +
+    scale_color_manual(name=NULL, values=cols) + 
+    scale_linetype_manual() +
+    #theme(legend.position=c(.80, .85),legend.background=element_rect(colour=&#39;black&#39;)) +
+    theme_bw()</code></pre>
+<p></details></p>
+<p><img src="/post/2019-04-20-sufing-the-web-at-work_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Here is quite a bit of information: The data and constant Poisson intensity from before is in the background. In addition the constant line from the asymptotic integrated intensity (blue, constant) is also plotted. More interestingly, the thick black line is the MAP estimate of the integrated intensity <span class="math inline">\(u_t\)</span>, which has a 95% confidence band (red) around it. Using this, we can also create a confidence band about the actual observations <span class="math inline">\(\{N_i\}_{i=1}^T\)</span> (light-grey). This nicely wraps the observations. Ole is indeed a complex object!</p>
+<p>I will try to work out the numerics for using the Affine properties of the CIR, together with the implementation of exact numeric derivatives of the Bessel function (using Tiny_ad) in TMB.</p>
