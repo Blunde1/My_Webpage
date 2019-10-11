@@ -1,28 +1,28 @@
 +++
-title = "Information criteria for gradient boosted trees: Adaptive tree size and early stopping"
+title = "An information criterion for gradient boosted trees"
 date = 2019-10-11T00:00:00  # Schedule page publish date.
 draft = false
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-time_start = 2019-06-26T17:08:35
-time_end = 2019-06-26T19:10:15
+time_start = 2019-09-17T13:00:00
+time_end = 2019-09-17T14:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["Berent Å. S. Lunde", "Tore S. Kleppe", "Hans J. Skaug"]
 
 # Abstract and optional shortened version.
-abstract = "In gradient tree boosting, the functional form of the ensemble repeatedly changes during training. To select a sensible functional complexity for the boosting ensemble, the leading implementations offer a high number of hyperparameters for regularization, available for manual tuning. This tuning typically require a combination of computationally costly cross validation, coupled with some expert knowledge. To combat this, we propose an information criterion for gradient boosted trees, applicable to both the learning of the structure of trees, and as a stopping criterion for the boosting algorithm. The resulting algorithm is adaptive to the training data at hand; it is largely automatic and with little worries of overfitting. Moreover, the computations for the criterion require little additional computational overhead, and, as the algorithm only has to run once, the computational cost is drastically reduced in comparison to implementations with manual tuning."
+abstract = "Gradient boosting has been highly successful in machine-learning competitions for structured/tabular data since the introduction of XGBoost in 2014. Gradient boosting may be seen as a way of doing functional gradient descent to the supervised learning problem. As a consequence, in gradient tree boosting, the functional form of the model-ensemble constantly changes during training. To be able to choose the optimal functional complexity, the leading implementations offer a high number of regularization hyperparameters, available for manual tuning. This tuning typically require a combination of computationally costly cross validation on a grid of hyperparameters, coupled with some expert knowledge. To combat this, we propose an information criterion for gradient boosted trees, applicable to both the learning of the topology of trees, and as a stopping criterion for the boosting algorithm. This makes the algorithm adaptive to the dataset at hand; it is completely automatic and with minimal worries of overfitting. Moreover, as the algorithm only has to run once, the computational cost is drastically reduced."
 
 # Name of event and optional event URL.
-event = "EcoSta 2019"
-event_url = "http://cmstatistics.org/EcoSta2019/index.php"
+event = "The stochastics seminar"
+event_url = "http://www.ux.uis.no/statistikk/seminar/"
 
 # Location of event.
-location = "National Chung Hsing University, Taiwan"
+location = "University of Stavanger, Norway"
 
 # Is this a selected talk? (true/false)
-selected = false
+selected = true
 
 # Projects (optional).
 #   Associate this talk with one or more of your projects.
