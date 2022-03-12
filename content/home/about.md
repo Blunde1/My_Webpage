@@ -59,7 +59,7 @@ but there are exceptions:
 - [atomic-bouldering-progression](https://play.google.com/store/apps): App for optimizing and logging training for climbing
 
 #### Hobbies 🧗🏻🐕‍🦺🛶🏕️ \
-I seek to go on more adventures into the wild. Preferably together with my wife and our Eurasier dog dog Arya (chalk-bearer).
+I seek to go on more adventures into the wild. Preferably together with my wife and our eurasier dog Arya (chalk-bearer).
 I also enjoy climbing both indoors and outdoors while hammocking and in good company, and perhaps enjoy an easy kayak trip.
 
 #### Blogging 💻 \
