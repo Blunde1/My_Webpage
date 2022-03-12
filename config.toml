@@ -52,17 +52,17 @@ enableGitInfo = false
 
   # Your details.
   name = "Berent Å. S. Lunde"
-  role = "PhD Candidate in Statistics"
+  role = "Senior Consultant | Adjunct Associate Professor"
 
   # Organizations/Affiliations.
   #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-  organizations = [ { name = "University of Stavanger", url = "https://www.uis.no/article.php?articleID=119870&categoryID=11198" } ]
+  organizations = [ { name = "Sonat", url = "https://sonat.no/people/berent-lunde" }, { name = "University of Bergen", url = "https://www.uib.no/personer/Berent.%C3%85nund.Str%C3%B8mnes.Lunde" }  ]
 
   gravatar = false  # Get your avatar from Gravatar.com? (true/false)
   avatar = "Berent_Profile_Picture.png"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
 
   # Details for the Contact Widget
-  email = "berent.a.lunde@uis.no"
+  email = "berent.lunde@sonat.no"
   address = "Kjølv Egelands Hus, Room C-257, University of Stavanger, Stavanger, Norway"
   office_hours = "Email for appointment"
   phone = "+47 47258605"
