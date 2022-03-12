@@ -40,21 +40,22 @@ weight = 5
 
 # Biography
 
-I am a senior consultant for [Sonat](https://sonat.no/people/berent-lunde) at [Equinor](https://www.equinor.com/) and an Adjunct Associate Professor in Statistics at [The University of Bergen](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde). I am also a certified actuary and a fortunate winner of
-[Aktuarprisen](http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf)
-2017 awarded by the Norwegian Society of Actuaries, and I have worked as an actuary in two major nordic non-life insurance company.
+I am a senior consultant for [Sonat](https://sonat.no/people/berent-lunde) at [Equinor](https://www.equinor.com/), an Adjunct Associate Professor in Statistics at [The University of Bergen](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) and a licensed actuary.
 
 **Research 🔭**\
 My research interests include computational statistics, information theory, financial and actuarial mathematics, machine learning, and programming, while applications to problems with latent dynamics are especially interesting.
+
 - See my [UiB homepage](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) for more details  on everything research related.
 
 **Software 📱**\
 Most of my software is open source on [Github](https://github.com/Blunde1) and tied to my research such as 
+
 - [aGTBoost](https://github.com/Blunde1/agtboost): Adaptive and automatic gradient boosting computations
 - [GraphSPME](https://github.com/equinor/GraphSPME): High dimensional precision matrix estimation with a known graphical structure
 - [ensemble-information-filter](): High dimensional data assimilation on Gaussian Markov Random Fieds
 
 but there are exceptions:
+
 - [atomic-bouldering-progression](): App for optimizing and logging training for climbing
 
 **Hobbies 🧗🏻**\
