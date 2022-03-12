@@ -42,12 +42,12 @@ weight = 5
 
 I am a senior consultant for [Sonat](https://sonat.no/people/berent-lunde) at [Equinor](https://www.equinor.com/), an Adjunct Associate Professor in Statistics at [The University of Bergen](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) and a licensed actuary.
 
-**Research 🔭**\
+## Research 🔭 \
 My research interests include computational statistics, information theory, financial and actuarial mathematics, machine learning, and programming, while applications to problems with latent dynamics are especially interesting.
 
 - See my [UiB homepage](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) for more details  on everything research related.
 
-**Software 📱**\
+### Software 📱 \
 Most of my software is open source on [Github](https://github.com/Blunde1) and tied to my research such as 
 
 - [aGTBoost](https://github.com/Blunde1/agtboost): Adaptive and automatic gradient boosting computations
@@ -58,11 +58,11 @@ but there are exceptions:
 
 - [atomic-bouldering-progression](https://play.google.com/store/apps): App for optimizing and logging training for climbing
 
-**Hobbies 🧗🏻🐕‍🦺🛶🏕️**\
+#### Hobbies 🧗🏻🐕‍🦺🛶🏕️ \
 I seek to go on more adventures into the wild. Preferably together with my wife and our Eurasier dog dog Arya (chalk-bearer).
 I also enjoy climbing both indoors and outdoors while hammocking and in good company, and perhaps enjoy an easy kayak trip.
 
-**Blogging 💻**\
+##### Blogging 💻 \
 When I have time and energy to spare, about things I find interesting.
 
 **Fandom**\
