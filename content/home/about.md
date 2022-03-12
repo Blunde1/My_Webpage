@@ -40,22 +40,31 @@ weight = 5
 
 # Biography
 
-I am a PhD candidate in statistics at the [University of Stavanger](https://www.uis.no/?lang=en_GB).
-My research interests include computational statistics, information theory, financial and actuarial mathematics, machine learning, and programming, while applications to problems with latent dynamics are especially interesting.
-
-Current work is in the intersect of probability theory, information and boosting algorithms; exploring and developing fully automated gradient tree boosting. 
-Other work include numerical Maximum Likelihood optimisation using saddlepoint methods with applications to stochastic differential equations with jumps.
-
-I enjoy seeing the applications of ideas to practice, and as such I actively participate in 
-[ML competitions](https://www.kaggle.com/berent), 
-have led a seminar-series with the intent of understanding
-"start-of-the-art" methods and methodology, and apply these for practical purposes in competitions.
-Recently I also won a [hackathon](https://github.com/Blunde1/AquaLens) using data science methodology
-
-I am a certified actuary and a fortunate winner of
+I am a senior consultant for [Sonat](https://sonat.no/people/berent-lunde) at [Equinor](https://www.equinor.com/) and an Adjunct Associate Professor in Statistics at [The University of Bergen](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde). I am also a certified actuary and a fortunate winner of
 [Aktuarprisen](http://aktfor.no/wp-content/uploads/2017/02/Likelihood-Estimation-of-Jump-Diffusions-Berent.pdf)
-2017 awarded by the Norwegian Society of Actuaries, and I have worked as an actuary in a major nordic non-life insurance company.
+2017 awarded by the Norwegian Society of Actuaries, and I have worked as an actuary in two major nordic non-life insurance company.
 
+**Research 🔭**\
+My research interests include computational statistics, information theory, financial and actuarial mathematics, machine learning, and programming, while applications to problems with latent dynamics are especially interesting.
+- See my [UiB homepage](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) for more details  on everything research related.
+
+**Software 📱**\
+Most of my software is open source on [Github](https://github.com/Blunde1) and tied to my research such as 
+- [aGTBoost](https://github.com/Blunde1/agtboost): Adaptive and automatic gradient boosting computations
+- [GraphSPME](https://github.com/equinor/GraphSPME): High dimensional precision matrix estimation with a known graphical structure
+- [ensemble-information-filter](): High dimensional data assimilation on Gaussian Markov Random Fieds
+
+but there are exceptions:
+- [atomic-bouldering-progression](): App for optimizing and logging training for climbing
+
+**Hobbies 🧗🏻**\
+I seek to go on more adventures into the wild. Follow my dog Arya 🐕‍🦺 on [Instagram](). 
+I also enjoy climbing 🧗🏻 both indoors and outdoors while hammocking and in good company.
+
+**Blogging 💻**\
+When I have time and energy to spare, about things I find interesting.
+
+**Fandom**\
 I am a huge fan of 
 [TMB](https://github.com/kaskr/adcomp), 
 [XGBoost](https://github.com/dmlc/xgboost) and 
