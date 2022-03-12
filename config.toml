@@ -63,7 +63,7 @@ enableGitInfo = false
 
   # Details for the Contact Widget
   email = "berent.lunde@sonat.no"
-  address = "Kjølv Egelands Hus, Room C-257, University of Stavanger, Stavanger, Norway"
+  address = "C. Sundts gate 17-19, Bergen, Norway"
   office_hours = "Email for appointment"
   phone = "+47 47258605"
   skype = "Berent Lunde"
@@ -99,7 +99,7 @@ enableGitInfo = false
 
   # Color theme.
   #   Choose from `default`, `ocean`, `forest`, `dark`, `apogee`, `1950s`, `coffee`, `cupcake`.
-  color_theme = "ocean"
+  color_theme = "default"
   
   # Enable users to switch between day and night mode?
     day_night = true
