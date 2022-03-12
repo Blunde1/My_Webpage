@@ -52,15 +52,15 @@ Most of my software is open source on [Github](https://github.com/Blunde1) and t
 
 - [aGTBoost](https://github.com/Blunde1/agtboost): Adaptive and automatic gradient boosting computations
 - [GraphSPME](https://github.com/equinor/GraphSPME): High dimensional precision matrix estimation with a known graphical structure
-- [ensemble-information-filter](): High dimensional data assimilation on Gaussian Markov Random Fieds
+- [ensemble-information-filter](https://github.com/equinor/MIG-data-assimilation): High dimensional data assimilation on Gaussian Markov Random Fieds
 
 but there are exceptions:
 
-- [atomic-bouldering-progression](): App for optimizing and logging training for climbing
+- [atomic-bouldering-progression](https://play.google.com/store/apps): App for optimizing and logging training for climbing
 
-**Hobbies 🧗🏻**\
-I seek to go on more adventures into the wild. Follow my dog Arya 🐕‍🦺 on [Instagram](). 
-I also enjoy climbing 🧗🏻 both indoors and outdoors while hammocking and in good company.
+**Hobbies 🧗🏻🐕‍🦺🛶🏕️**\
+I seek to go on more adventures into the wild. Preferably together with my wife and our Eurasier dog dog Arya (chalk-bearer).
+I also enjoy climbing both indoors and outdoors while hammocking and in good company, and perhaps enjoy an easy kayak trip.
 
 **Blogging 💻**\
 When I have time and energy to spare, about things I find interesting.
