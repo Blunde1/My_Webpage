@@ -20,16 +20,61 @@ date_format = "January 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
+  title = "Senior Consultant"
+  company = "Sonat"
+  company_url = "https://www.sonat.no/"
+  location = "Bergen"
+  date_start = "2021-09-01"
+  date_end = ""
+  description = """
+  **Equinor Scientific Computing Team**
+  
+  - Refactoring data-assimilation algorithms for reservoir engineering.
+  - Developed the GraphSPME sparse precision estimation library.
+  - Developed the Ensemble Information Filter and Smoother algorithms.
+
+  **Norwegian Hull Club**
+  
+  - Workshop on automatic and adaptive gradient tree boosting
+  """
+  
+ [[experience]]
+  title = "Adjunct Associate Professor"
+  company = "University of Bergen, Department of Mathematics"
+  company_url = "https://www.uib.no/"
+  location = "Bergen"
+  date_start = "2021-01-01"
+  date_end = ""
+  description = """
+  Research: Developing information theory for automatic ML-algorithms.\
+  Teaching and seminars: Course development for actuarial and data-science courses.\
+  Master student supervision.
+  """
+
+[[experience]]
+  title = "Data Scientist & Actuary"
+  company = "Frende"
+  company_url = "https://www.frende.no/"
+  location = "Bergen"
+  date_start = "2020-09-01"
+  date_end = "2021-08-31"
+  description = """
+  Translate business needs into mathematical (optimization) problems.\
+  Advocate version control, code-standards, packaging, CI/CD, containerisation, ...\
+  Introduced advanced regression techniques such as GBM and mixed effects GAM.
+  """
+  
+[[experience]]
   title = "PhD Candidate"
   company = "University of Stavanger"
   company_url = "https://www.uis.no/?lang=en_GB"
   location = "Stavanger"
   date_start = "2017-09-04"
-  date_end = ""
+  date_end = "2020-08-31"
   description = """
   Research areas:
   
-  * Information theoretic gradient tree boosting
+  * Information theoretic gradient tree boosting: [aGTBoost](https://github.com/Blunde1/agtboost)
   * Saddlepoint addjusted inversion of characteristic functions
   """
 
