@@ -46,8 +46,8 @@ date_format = "January 2006"
   date_start = "2021-01-01"
   date_end = ""
   description = """
-  - Research: Developing information theory for automatic ML-algorithms.\
-  - Teaching and seminars: Course development for actuarial and data-science courses.\
+  - Research: Developing information theory for automatic ML-algorithms.
+  - Teaching and seminars: Course development for actuarial and data-science courses.
   - Master student supervision.
   """
 
@@ -60,7 +60,7 @@ date_format = "January 2006"
   date_end = "2021-08-31"
   description = """
   - Translate business needs into mathematical (optimization) problems.
-  - Advocate version control, code-standards, packaging, CI/CD, containerisation, ...
+  - Advocate version control, code-standards, packaging, CI/CD, containerisation.
   - Introduced advanced regression techniques such as GBM and mixed effects GAM.
   """
   
