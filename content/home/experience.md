@@ -20,12 +20,28 @@ date_format = "January 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
+  title = "Principal developer"
+  company = "Equinor"
+  company_url = "https://www.equinor.com/"
+  location = "Bergen"
+  date_start = "2023-07-01"
+  date_end = ""
+  description = """
+  **Developer & Research**
+  
+  - Researching new algorithms in ensemble based data assimilation
+  - The Ensemble Information Filter (EnIF)
+  - Cooperation with TU Delft on non-linear and non-Gaussian ensemble methods
+
+  """
+
+[[experience]]
   title = "Senior Consultant"
   company = "Sonat"
   company_url = "https://www.sonat.no/"
   location = "Bergen"
   date_start = "2021-09-01"
-  date_end = ""
+  date_end = "2023-07-01"
   description = """
   **Equinor Scientific Computing Team**
   
@@ -44,7 +60,7 @@ date_format = "January 2006"
   company_url = "https://www.uib.no/"
   location = "Bergen"
   date_start = "2021-01-01"
-  date_end = ""
+  date_end = "2023-01-01"
   description = """
   - Research: Developing information theory for automatic ML-algorithms.
   - Teaching and seminars: Course development for actuarial and data-science courses.
