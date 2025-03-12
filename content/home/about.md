@@ -42,10 +42,6 @@ weight = 5
 
 I currently reside in [Equinor](https://www.equinor.com/) as a principal scientific developer.
 
-I work with computational statistics on a practical and theoretical level. I reside in Equinor.
-🔭 Generally researching information theoretic approaches to make ML-algorithms adaptive to the problem/data at hand.
-🌱 Currently working on large scale ensemble based data assimilation.
-
 #### Research 🔭 \
 I work with computational statistics on a practical and theoretical level. Generally researching information theoretic approaches to make ML-algorithms adaptive to the problem/data at hand. I currently target large scale ensemble based data assimilation.
 
