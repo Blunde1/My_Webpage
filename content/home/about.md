@@ -40,26 +40,24 @@ weight = 5
 
 # Biography
 
-I am a senior consultant for [Sonat](https://sonat.no/people/berent-lunde) at [Equinor](https://www.equinor.com/), an Adjunct Associate Professor in Statistics at [The University of Bergen](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) and a licensed actuary.
+I currently reside in [Equinor](https://www.equinor.com/) as a principal scientific developer.
+
+I work with computational statistics on a practical and theoretical level. I reside in Equinor.
+🔭 Generally researching information theoretic approaches to make ML-algorithms adaptive to the problem/data at hand.
+🌱 Currently working on large scale ensemble based data assimilation.
 
 #### Research 🔭 \
-My research interests include computational statistics, information theory, financial and actuarial mathematics, machine learning, and programming, while applications to problems with latent dynamics are especially interesting.
+I work with computational statistics on a practical and theoretical level. Generally researching information theoretic approaches to make ML-algorithms adaptive to the problem/data at hand. I currently target large scale ensemble based data assimilation.
 
-- See my [UiB homepage](https://www.uib.no/en/persons/Berent.%C3%85nund.Str%C3%B8mnes.Lunde) for more details  on everything research related.
 
 #### Software 📱 \
 Most of my software is open source on [Github](https://github.com/Blunde1) and tied to my research such as 
 
 - [aGTBoost](https://github.com/Blunde1/agtboost): Adaptive and automatic gradient boosting computations
-- [GraphSPME](https://github.com/equinor/GraphSPME): High dimensional precision matrix estimation with a known graphical structure
-- [ensemble-information-filter](https://github.com/equinor/MIG-data-assimilation): High dimensional data assimilation on Gaussian Markov Random Fieds
-
-but there are exceptions:
-
-- [atomic-bouldering-progression](https://play.google.com/store/apps): App for optimizing and logging training for climbing
+- [graphite-maps](https://github.com/equinor/graphite-maps): High dimensional data assimilation on Gaussian Markov Random Fieds
 
 #### Hobbies 🧗🏻🐕‍🦺🛶🏕️ \
-I seek to go on more adventures into the wild. Preferably together with my wife and our eurasier dog Arya (chalk-bearer).
+I like adventures in nature. Preferably together with my wife and our eurasier dog Arya (chalk-bearer).
 I also enjoy climbing both indoors and outdoors while hammocking and in good company, and perhaps enjoy an easy kayak trip.
 
 #### Blogging 💻 \
